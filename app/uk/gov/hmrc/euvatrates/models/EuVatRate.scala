@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.euvatrates.config
+package uk.gov.hmrc.euvatrates.models
 
-import com.google.inject.AbstractModule
+import play.api.libs.json.{Format, Json}
 
-import java.time.{Clock, ZoneOffset}
+import java.time.LocalDate
 
-class Module extends AbstractModule {
+case class EuVatRate(country: Country, vatRate: BigDecimal, vatRateType: VatRateType, situatedOn: LocalDate)
 
-  override def configure(): Unit = {
-
-    bind(classOf[AppConfig]).asEagerSingleton()
-    bind(classOf[Clock]).toInstance(Clock.systemDefaultZone.withZone(ZoneOffset.UTC))
-  }
+object EuVatRate {
+  implicit val format: Format[EuVatRate] = Json.format[EuVatRate]
 }

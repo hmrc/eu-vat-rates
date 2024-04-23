@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.euvatrates.config
+package uk.gov.hmrc.euvatrates.base
 
-import com.google.inject.AbstractModule
+import scala.io.Source
+import scala.util.Try
 
-import java.time.{Clock, ZoneOffset}
+object SoapExamples {
 
-class Module extends AbstractModule {
+  val exampleRequest: Try[String] = Try(Source.fromInputStream(getClass.getResourceAsStream("/resources/examples/example-request.xml")).mkString)
 
-  override def configure(): Unit = {
+  val exampleResponse: Try[String] = Try(Source.fromInputStream(getClass.getResourceAsStream("/resources/examples/example-response.xml")).mkString)
 
-    bind(classOf[AppConfig]).asEagerSingleton()
-    bind(classOf[Clock]).toInstance(Clock.systemDefaultZone.withZone(ZoneOffset.UTC))
-  }
+
 }

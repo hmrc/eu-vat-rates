@@ -1,0 +1,1585 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+    <env:Header/>
+    <env:Body>
+        <ns0:retrieveVatRatesRespMsg xmlns="urn:ec.europa.eu:taxud:tedb:services:v1:IVatRetrievalService:types"
+                                     xmlns:ns0="urn:ec.europa.eu:taxud:tedb:services:v1:IVatRetrievalService">
+            <additionalInformation/>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>10.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cnCodes>
+                    <code>
+                        <value>0106 41 00</value>
+                        <description>Bees</description>
+                    </code>
+                    <code>
+                        <value>02</value>
+                        <description>CHAPTER 2 - MEAT AND EDIBLE MEAT OFFAL</description>
+                    </code>
+                    <code>
+                        <value>03</value>
+                        <description>CHAPTER 3 - FISH AND CRUSTACEANS, MOLLUSCS AND OTHER AQUATIC INVERTEBRATES
+                        </description>
+                    </code>
+                    <code>
+                        <value>04</value>
+                        <description>CHAPTER 4 - DAIRY PRODUCE; BIRDS' EGGS; NATURAL HONEY; EDIBLE PRODUCTS OF ANIMAL
+                            ORIGIN, NOT ELSEWHERE SPECIFIED OR INCLUDED
+                        </description>
+                    </code>
+                    <code>
+                        <value>0511 99 39</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>0701</value>
+                        <description>Potatoes, fresh or chilled</description>
+                    </code>
+                    <code>
+                        <value>0702 00 00</value>
+                        <description>Tomatoes, fresh or chilled</description>
+                    </code>
+                    <code>
+                        <value>0703</value>
+                        <description>Onions, shallots, garlic, leeks and other alliaceous vegetables, fresh or chilled
+                        </description>
+                    </code>
+                    <code>
+                        <value>0704</value>
+                        <description>Cabbages, cauliflowers, kohlrabi, kale and similar edible brassicas, fresh or
+                            chilled
+                        </description>
+                    </code>
+                    <code>
+                        <value>0705</value>
+                        <description>Lettuce (Lactuca sativa) and chicory (Cichorium spp.), fresh or chilled
+                        </description>
+                    </code>
+                    <code>
+                        <value>0706</value>
+                        <description>Carrots, turnips, salad beetroot, salsify, celeriac, radishes and similar edible
+                            roots, fresh or chilled
+                        </description>
+                    </code>
+                    <code>
+                        <value>0708</value>
+                        <description>Leguminous vegetables, shelled or unshelled, fresh or chilled</description>
+                    </code>
+                    <code>
+                        <value>0709</value>
+                        <description>Other vegetables, fresh or chilled</description>
+                    </code>
+                    <code>
+                        <value>0710</value>
+                        <description>Vegetables (uncooked or cooked by steaming or boiling in water), frozen
+                        </description>
+                    </code>
+                    <code>
+                        <value>0711</value>
+                        <description>Vegetables provisionally preserved, but unsuitable in that state for immediate
+                            consumption
+                        </description>
+                    </code>
+                    <code>
+                        <value>0712</value>
+                        <description>Dried vegetables, whole, cut, sliced, broken or in powder, but not further
+                            prepared
+                        </description>
+                    </code>
+                    <code>
+                        <value>0713</value>
+                        <description>Dried leguminous vegetables, shelled, whether or not skinned or split</description>
+                    </code>
+                    <code>
+                        <value>0714</value>
+                        <description>Manioc, arrowroot, salep, Jerusalem artichokes, sweet potatoes and similar roots
+                            and tubers with high starch or inulin content, fresh, chilled, frozen or dried, whether or
+                            not sliced or in the form of pellets; sago pith
+                        </description>
+                    </code>
+                    <code>
+                        <value>0801</value>
+                        <description>Coconuts, Brazil nuts and cashew nuts, fresh or dried, whether or not shelled or
+                            peeled
+                        </description>
+                    </code>
+                    <code>
+                        <value>0802</value>
+                        <description>Other nuts, fresh or dried, whether or not shelled or peeled</description>
+                    </code>
+                    <code>
+                        <value>0803</value>
+                        <description>Bananas, including plantains, fresh or dried</description>
+                    </code>
+                    <code>
+                        <value>0804</value>
+                        <description>Dates, figs, pineapples, avocados, guavas, mangoes and mangosteens, fresh or
+                            dried
+                        </description>
+                    </code>
+                    <code>
+                        <value>0805</value>
+                        <description>Citrus fruit, fresh or dried</description>
+                    </code>
+                    <code>
+                        <value>0806</value>
+                        <description>Grapes, fresh or dried</description>
+                    </code>
+                    <code>
+                        <value>0807</value>
+                        <description>Melons (including watermelons) and papaws (papayas), fresh</description>
+                    </code>
+                    <code>
+                        <value>0809</value>
+                        <description>Apricots, cherries, peaches (including nectarines), plums and sloes, fresh
+                        </description>
+                    </code>
+                    <code>
+                        <value>0810</value>
+                        <description>Other fruit, fresh</description>
+                    </code>
+                    <code>
+                        <value>0811</value>
+                        <description>Fruit and nuts, uncooked or cooked by steaming or boiling in water, frozen, whether
+                            or not containing added sugar or other sweetening matter
+                        </description>
+                    </code>
+                    <code>
+                        <value>0812</value>
+                        <description>Fruit and nuts provisionally preserved, but unsuitable in that state for immediate
+                            consumption
+                        </description>
+                    </code>
+                    <code>
+                        <value>0813</value>
+                        <description>Fruit, dried, other than that of headings 0801 to 0806; mixtures of nuts or dried
+                            fruits of this chapter
+                        </description>
+                    </code>
+                    <code>
+                        <value>0904</value>
+                        <description>Pepper of the genus Piper; dried or crushed or ground fruit of the genus Capsicum
+                            or of the genus Pimenta
+                        </description>
+                    </code>
+                    <code>
+                        <value>0905</value>
+                        <description>Vanilla</description>
+                    </code>
+                    <code>
+                        <value>0906</value>
+                        <description>Cinnamon and cinnamon-tree flowers</description>
+                    </code>
+                    <code>
+                        <value>0907</value>
+                        <description>Cloves (whole fruit, cloves and stems)</description>
+                    </code>
+                    <code>
+                        <value>0908</value>
+                        <description>Nutmeg, mace and cardamoms</description>
+                    </code>
+                    <code>
+                        <value>0909</value>
+                        <description>Seeds of anise, badian, fennel, coriander, cumin or caraway; juniper berries
+                        </description>
+                    </code>
+                    <code>
+                        <value>0910</value>
+                        <description>Ginger, saffron, turmeric (curcuma), thyme, bay leaves, curry and other spices
+                        </description>
+                    </code>
+                    <code>
+                        <value>10</value>
+                        <description>CHAPTER 10 - CEREALS</description>
+                    </code>
+                    <code>
+                        <value>1101 00</value>
+                        <description>Wheat or meslin flour</description>
+                    </code>
+                    <code>
+                        <value>1102</value>
+                        <description>Cereal flours other than of wheat or meslin</description>
+                    </code>
+                    <code>
+                        <value>1103</value>
+                        <description>Cereal groats, meal and pellets</description>
+                    </code>
+                    <code>
+                        <value>1104</value>
+                        <description>Cereal grains otherwise worked (for example, hulled, rolled, flaked, pearled,
+                            sliced or kibbled), except rice of heading 1006; germ of cereals, whole, rolled, flaked or
+                            ground
+                        </description>
+                    </code>
+                    <code>
+                        <value>1105</value>
+                        <description>Flour, meal, powder, flakes, granules and pellets of potatoes</description>
+                    </code>
+                    <code>
+                        <value>1106 10 00</value>
+                        <description>Of the dried leguminous vegetables of heading 0713</description>
+                    </code>
+                    <code>
+                        <value>1106 30</value>
+                        <description>Of the products of Chapter 8</description>
+                    </code>
+                    <code>
+                        <value>1108 11 00</value>
+                        <description>Wheat starch</description>
+                    </code>
+                    <code>
+                        <value>1108 12 00</value>
+                        <description>Maize (corn) starch</description>
+                    </code>
+                    <code>
+                        <value>1108 13 00</value>
+                        <description>Potato starch</description>
+                    </code>
+                    <code>
+                        <value>1201</value>
+                        <description>Soya beans, whether or not broken</description>
+                    </code>
+                    <code>
+                        <value>1202</value>
+                        <description>Groundnuts, not roasted or otherwise cooked, whether or not shelled or broken
+                        </description>
+                    </code>
+                    <code>
+                        <value>1203 00 00</value>
+                        <description>Copra</description>
+                    </code>
+                    <code>
+                        <value>1204 00</value>
+                        <description>Linseed, whether or not broken</description>
+                    </code>
+                    <code>
+                        <value>1205</value>
+                        <description>Rape or colza seeds, whether or not broken</description>
+                    </code>
+                    <code>
+                        <value>1206 00</value>
+                        <description>Sunflower seeds, whether or not broken</description>
+                    </code>
+                    <code>
+                        <value>1207</value>
+                        <description>Other oil seeds and oleaginous fruits, whether or not broken</description>
+                    </code>
+                    <code>
+                        <value>1208</value>
+                        <description>Flours and meals of oil seeds or oleaginous fruits, other than those of mustard
+                        </description>
+                    </code>
+                    <code>
+                        <value>1210</value>
+                        <description>Hop cones, fresh or dried, whether or not ground, powdered or in the form of
+                            pellets; lupulin
+                        </description>
+                    </code>
+                    <code>
+                        <value>1211 90 86</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1212 91 20</value>
+                        <description>Dried, whether or not ground</description>
+                    </code>
+                    <code>
+                        <value>1212 91 80</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1212 92 00</value>
+                        <description>Locust beans (carob)</description>
+                    </code>
+                    <code>
+                        <value>1212 94 00</value>
+                        <description>Chicory roots</description>
+                    </code>
+                    <code>
+                        <value>1212 99</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1212 99 41</value>
+                        <description>Not decorticated, crushed or ground</description>
+                    </code>
+                    <code>
+                        <value>1213 00 00</value>
+                        <description>Cereal straw and husks, unprepared, whether or not chopped, ground, pressed or in
+                            the form of pellets
+                        </description>
+                    </code>
+                    <code>
+                        <value>1302 20</value>
+                        <description>Pectic substances, pectinates and pectates</description>
+                    </code>
+                    <code>
+                        <value>1501 10 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1501 90 00</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1502 10 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1503 00 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1507 10 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1507 90 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1508 10 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1508 90 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1509</value>
+                        <description>Olive oil and its fractions, whether or not refined, but not chemically modified
+                        </description>
+                    </code>
+                    <code>
+                        <value>1510 00</value>
+                        <description>Other oils and their fractions, obtained solely from olives, whether or not
+                            refined, but not chemically modified, including blends of these oils or fractions with oils
+                            or fractions of heading 1509
+                        </description>
+                    </code>
+                    <code>
+                        <value>1511 10 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1511 90 11</value>
+                        <description>In immediate packings of a net content not exceeding 1 kg</description>
+                    </code>
+                    <code>
+                        <value>1511 90 19</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1511 90 99</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1512 11 91</value>
+                        <description>Sunflower-seed oil</description>
+                    </code>
+                    <code>
+                        <value>1512 11 99</value>
+                        <description>Safflower oil</description>
+                    </code>
+                    <code>
+                        <value>1512 19 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1512 21 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1512 29 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1513 11 91</value>
+                        <description>In immediate packings of a net content not exceeding 1 kg</description>
+                    </code>
+                    <code>
+                        <value>1513 11 99</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1513 19 11</value>
+                        <description>In immediate packings of a net content not exceeding 1 kg</description>
+                    </code>
+                    <code>
+                        <value>1513 19 19</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1513 19 91</value>
+                        <description>In immediate packings of a net content not exceeding 1 kg</description>
+                    </code>
+                    <code>
+                        <value>1513 19 99</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1513 21 30</value>
+                        <description>In immediate packings of a net content not exceeding 1 kg</description>
+                    </code>
+                    <code>
+                        <value>1513 21 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1513 29 11</value>
+                        <description>In immediate packings of a net content not exceeding 1 kg</description>
+                    </code>
+                    <code>
+                        <value>1513 29 19</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1513 29 50</value>
+                        <description>In immediate packings of a net content not exceeding 1 kg</description>
+                    </code>
+                    <code>
+                        <value>1513 29 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1514 11 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1514 19 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1514 91 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1514 99 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1515 11 00</value>
+                        <description>Crude oil</description>
+                    </code>
+                    <code>
+                        <value>1515 19 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1515 21 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1515 29 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1515 30 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1515 50 19</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1515 50 99</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1515 90 11</value>
+                        <description>Tung oil; jojoba and oiticica oils; myrtle wax and Japan wax; their fractions
+                        </description>
+                    </code>
+                    <code>
+                        <value>1515 90 29</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1515 90 39</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1515 90 51</value>
+                        <description>Solid, in immediate packings of a net content not exceeding 1 kg</description>
+                    </code>
+                    <code>
+                        <value>1515 90 59</value>
+                        <description>Solid, other; fluid</description>
+                    </code>
+                    <code>
+                        <value>1515 90 91</value>
+                        <description>Solid, in immediate packings of a net content not exceeding 1 kg</description>
+                    </code>
+                    <code>
+                        <value>1515 90 99</value>
+                        <description>Solid, other; fluid</description>
+                    </code>
+                    <code>
+                        <value>1516 10</value>
+                        <description>Animal fats and oils and their fractions</description>
+                    </code>
+                    <code>
+                        <value>1516 10 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>1516 20</value>
+                        <description>Vegetable fats and oils and their fractions</description>
+                    </code>
+                    <code>
+                        <value>1517 10</value>
+                        <description>Margarine, excluding liquid margarine</description>
+                    </code>
+                    <code>
+                        <value>1517 90 91</value>
+                        <description>Fixed vegetable oils, fluid, mixed</description>
+                    </code>
+                    <code>
+                        <value>1517 90 99</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>16</value>
+                        <description>CHAPTER 16 - PREPARATIONS OF MEAT, OF FISH, OF CRUSTACEANS, MOLLUSCS OR OTHER
+                            AQUATIC INVERTEBRATES, OR OF INSECTS
+                        </description>
+                    </code>
+                    <code>
+                        <value>17</value>
+                        <description>CHAPTER 17 - SUGARS AND SUGAR CONFECTIONERY</description>
+                    </code>
+                    <code>
+                        <value>1805 00 00</value>
+                        <description>Cocoa powder, not containing added sugar or other sweetening matter</description>
+                    </code>
+                    <code>
+                        <value>1806</value>
+                        <description>Chocolate and other food preparations containing cocoa</description>
+                    </code>
+                    <code>
+                        <value>19</value>
+                        <description>CHAPTER 19 - PREPARATIONS OF CEREALS, FLOUR, STARCH OR MILK; PASTRYCOOKS'
+                            PRODUCTS
+                        </description>
+                    </code>
+                    <code>
+                        <value>2001</value>
+                        <description>Vegetables, fruit, nuts and other edible parts of plants, prepared or preserved by
+                            vinegar or acetic acid
+                        </description>
+                    </code>
+                    <code>
+                        <value>2002</value>
+                        <description>Tomatoes prepared or preserved otherwise than by vinegar or acetic acid
+                        </description>
+                    </code>
+                    <code>
+                        <value>2003</value>
+                        <description>Mushrooms and truffles, prepared or preserved otherwise than by vinegar or acetic
+                            acid
+                        </description>
+                    </code>
+                    <code>
+                        <value>2004</value>
+                        <description>Other vegetables prepared or preserved otherwise than by vinegar or acetic acid,
+                            frozen, other than products of heading 2006
+                        </description>
+                    </code>
+                    <code>
+                        <value>2005</value>
+                        <description>Other vegetables prepared or preserved otherwise than by vinegar or acetic acid,
+                            not frozen, other than products of heading 2006
+                        </description>
+                    </code>
+                    <code>
+                        <value>2006 00</value>
+                        <description>Vegetables, fruit, nuts, fruit-peel and other parts of plants, preserved by sugar
+                            (drained, glacé or crystallised)
+                        </description>
+                    </code>
+                    <code>
+                        <value>2007</value>
+                        <description>Jams, fruit jellies, marmalades, fruit or nut purée and fruit or nut pastes,
+                            obtained by cooking, whether or not containing added sugar or other sweetening matter
+                        </description>
+                    </code>
+                    <code>
+                        <value>2008</value>
+                        <description>Fruit, nuts and other edible parts of plants, otherwise prepared or preserved,
+                            whether or not containing added sugar or other sweetening matter or spirit, not elsewhere
+                            specified or included
+                        </description>
+                    </code>
+                    <code>
+                        <value>2101 30</value>
+                        <description>Roasted chicory and other roasted coffee substitutes, and extracts, essences and
+                            concentrates thereof
+                        </description>
+                    </code>
+                    <code>
+                        <value>2102</value>
+                        <description>Yeasts (active or inactive); other single-cell micro-organisms, dead (but not
+                            including vaccines of heading 3002); prepared baking powders
+                        </description>
+                    </code>
+                    <code>
+                        <value>2103</value>
+                        <description>Sauces and preparations therefor; mixed condiments and mixed seasonings; mustard
+                            flour and meal and prepared mustard
+                        </description>
+                    </code>
+                    <code>
+                        <value>2104</value>
+                        <description>Soups and broths and preparations therefor; homogenised composite food
+                            preparations
+                        </description>
+                    </code>
+                    <code>
+                        <value>2105 00</value>
+                        <description>Ice cream and other edible ice, whether or not containing cocoa</description>
+                    </code>
+                    <code>
+                        <value>2106</value>
+                        <description>Food preparations not elsewhere specified or included</description>
+                    </code>
+                    <code>
+                        <value>2209 00</value>
+                        <description>Vinegar and substitutes for vinegar obtained from acetic acid</description>
+                    </code>
+                    <code>
+                        <value>2501 00 91</value>
+                        <description>Salt suitable for human consumption</description>
+                    </code>
+                    <code>
+                        <value>2836 20 00</value>
+                        <description>Disodium carbonate</description>
+                    </code>
+                    <code>
+                        <value>2836 99 17</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>2915 11 00</value>
+                        <description>Formic acid</description>
+                    </code>
+                    <code>
+                        <value>3202 10 00</value>
+                        <description>Synthetic organic tanning substances</description>
+                    </code>
+                    <code>
+                        <value>3503 00 10</value>
+                        <description>Gelatin and derivatives thereof</description>
+                    </code>
+                    <code>
+                        <value>3507 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>3824 99 92</value>
+                        <description>In the form of a liquid at 20 °C</description>
+                    </code>
+                    <code>
+                        <value>3824 99 93</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>3924 90 00</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>4014 90 00</value>
+                        <description>Other</description>
+                    </code>
+                </cnCodes>
+                <category>
+                    <identifier>FOODSTUFFS</identifier>
+                    <description>Foodstuffs (including beverages but excluding alcoholic beverages) for human and animal
+                        consumption; live animals, seeds, plants and …
+                    </description>
+                </category>
+                <comment>Annex 1 to Sec. 10 of the Austrian VAT Act 1994 contains a list of goods falling under the
+                    reduced rate of 10% such as meal, milk, cereals and so on
+                    (https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&amp;Gesetzesnummer=10004873&amp;Artikel=&amp;Paragraf=&amp;Anlage=1&amp;Uebergangsrecht=).
+                    For legal certainty please have a look at the Austrian VAT Act 1994 (can be found at
+                    www.ris.bka.gv.at).
+                </comment>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>13.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cnCodes>
+                    <code>
+                        <value>0101 29 10</value>
+                        <description>For slaughter</description>
+                    </code>
+                    <code>
+                        <value>0101 30 00</value>
+                        <description>Asses</description>
+                    </code>
+                    <code>
+                        <value>0101 90 00</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>0102</value>
+                        <description>Live bovine animals</description>
+                    </code>
+                    <code>
+                        <value>0103</value>
+                        <description>Live swine</description>
+                    </code>
+                    <code>
+                        <value>0104</value>
+                        <description>Live sheep and goats</description>
+                    </code>
+                    <code>
+                        <value>0105</value>
+                        <description>Live poultry, that is to say, fowls of the species Gallus domesticus, ducks, geese,
+                            turkeys and guinea fowls
+                        </description>
+                    </code>
+                    <code>
+                        <value>0601</value>
+                        <description>Bulbs, tubers, tuberous roots, corms, crowns and rhizomes, dormant, in growth or in
+                            flower; chicory plants and roots other than roots of heading 1212
+                        </description>
+                    </code>
+                    <code>
+                        <value>0602</value>
+                        <description>Other live plants (including their roots), cuttings and slips; mushroom spawn
+                        </description>
+                    </code>
+                    <code>
+                        <value>0603</value>
+                        <description>Cut flowers and flower buds of a kind suitable for bouquets or for ornamental
+                            purposes, fresh, dried, dyed, bleached, impregnated or otherwise prepared
+                        </description>
+                    </code>
+                    <code>
+                        <value>0604 20</value>
+                        <description>Fresh</description>
+                    </code>
+                    <code>
+                        <value>1209</value>
+                        <description>Seeds, fruit and spores, of a kind used for sowing</description>
+                    </code>
+                    <code>
+                        <value>1214</value>
+                        <description>Swedes, mangolds, fodder roots, hay, lucerne (alfalfa), clover, sainfoin, forage
+                            kale, lupines, vetches and similar forage products, whether or not in the form of pellets
+                        </description>
+                    </code>
+                    <code>
+                        <value>23</value>
+                        <description>CHAPTER 23 - RESIDUES AND WASTE FROM THE FOOD INDUSTRIES; PREPARED ANIMAL FODDER
+                        </description>
+                    </code>
+                    <code>
+                        <value>3101 00 00</value>
+                        <description>Animal or vegetable fertilisers, whether or not mixed together or chemically
+                            treated; fertilisers produced by the mixing or chemical treatment of animal or vegetable
+                            products
+                        </description>
+                    </code>
+                    <code>
+                        <value>4401</value>
+                        <description>Fuel wood, in logs, in billets, in twigs, in faggots or in similar forms; wood in
+                            chips or particles; sawdust and wood waste and scrap, whether or not agglomerated in logs,
+                            briquettes, pellets or similar forms
+                        </description>
+                    </code>
+                </cnCodes>
+                <category>
+                    <identifier>AGRICULTURAL_PRODUCTION</identifier>
+                    <description>Supply of goods and services of a kind normally intended for use in agricultural
+                        production but excluding capital goods such as machinery or buildings
+                    </description>
+                </category>
+                <comment>Annex 2 to Sec. 10 of the Austrian VAT Act 1994 contains a list of goods falling under the
+                    reduced rate of 13% such as life-stock, living plants
+                    (https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&amp;Gesetzesnummer=10004873&amp;FassungVom=2016-01-01&amp;Artikel=&amp;Paragraf=&amp;Anlage=2&amp;Uebergangsrecht=).
+                    For legal certainty please have a look at the Austrian VAT Act 1994 (can be found at
+                    www.ris.bka.gv.at).
+                </comment>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>13.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cnCodes>
+                    <code>
+                        <value>0101</value>
+                        <description>Live horses, asses, mules and hinnies</description>
+                    </code>
+                    <code>
+                        <value>0101 29 10</value>
+                        <description>For slaughter</description>
+                    </code>
+                    <code>
+                        <value>0101 30 00</value>
+                        <description>Asses</description>
+                    </code>
+                    <code>
+                        <value>0101 90 00</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>0102</value>
+                        <description>Live bovine animals</description>
+                    </code>
+                    <code>
+                        <value>0103</value>
+                        <description>Live swine</description>
+                    </code>
+                    <code>
+                        <value>0104</value>
+                        <description>Live sheep and goats</description>
+                    </code>
+                    <code>
+                        <value>0105</value>
+                        <description>Live poultry, that is to say, fowls of the species Gallus domesticus, ducks, geese,
+                            turkeys and guinea fowls
+                        </description>
+                    </code>
+                    <code>
+                        <value>0601</value>
+                        <description>Bulbs, tubers, tuberous roots, corms, crowns and rhizomes, dormant, in growth or in
+                            flower; chicory plants and roots other than roots of heading 1212
+                        </description>
+                    </code>
+                    <code>
+                        <value>0602</value>
+                        <description>Other live plants (including their roots), cuttings and slips; mushroom spawn
+                        </description>
+                    </code>
+                    <code>
+                        <value>0603</value>
+                        <description>Cut flowers and flower buds of a kind suitable for bouquets or for ornamental
+                            purposes, fresh, dried, dyed, bleached, impregnated or otherwise prepared
+                        </description>
+                    </code>
+                    <code>
+                        <value>0604 20</value>
+                        <description>Fresh</description>
+                    </code>
+                    <code>
+                        <value>1209</value>
+                        <description>Seeds, fruit and spores, of a kind used for sowing</description>
+                    </code>
+                    <code>
+                        <value>1214</value>
+                        <description>Swedes, mangolds, fodder roots, hay, lucerne (alfalfa), clover, sainfoin, forage
+                            kale, lupines, vetches and similar forage products, whether or not in the form of pellets
+                        </description>
+                    </code>
+                    <code>
+                        <value>23</value>
+                        <description>CHAPTER 23 - RESIDUES AND WASTE FROM THE FOOD INDUSTRIES; PREPARED ANIMAL FODDER
+                        </description>
+                    </code>
+                    <code>
+                        <value>3101 00 00</value>
+                        <description>Animal or vegetable fertilisers, whether or not mixed together or chemically
+                            treated; fertilisers produced by the mixing or chemical treatment of animal or vegetable
+                            products
+                        </description>
+                    </code>
+                    <code>
+                        <value>4401</value>
+                        <description>Fuel wood, in logs, in billets, in twigs, in faggots or in similar forms; wood in
+                            chips or particles; sawdust and wood waste and scrap, whether or not agglomerated in logs,
+                            briquettes, pellets or similar forms
+                        </description>
+                    </code>
+                </cnCodes>
+                <category>
+                    <identifier>FOODSTUFFS</identifier>
+                    <description>Foodstuffs (including beverages but excluding alcoholic beverages) for human and animal
+                        consumption; live animals, seeds, plants and …
+                    </description>
+                </category>
+                <comment>Annex 2 to Sec. 10 of the Austrian VAT Act 1994 contains a list of goods falling under the
+                    reduced rate of 13% such as life-stock, living plants
+                    (https://www.ris.bka.gv.at/NormDokument.wxe?Abfrage=Bundesnormen&amp;Gesetzesnummer=10004873&amp;FassungVom=2016-01-01&amp;Artikel=&amp;Paragraf=&amp;Anlage=2&amp;Uebergangsrecht=).
+                    For legal certainty please have a look at the Austrian VAT Act 1994 (can be found at
+                    www.ris.bka.gv.at).
+                </comment>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>13.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cnCodes>
+                    <code>
+                        <value>5805 00 00</value>
+                        <description>Hand-woven tapestries of the type Gobelins, Flanders, Aubusson, Beauvais and the
+                            like, and needle-worked tapestries (for example, petit point, cross stitch), whether or not
+                            made up
+                        </description>
+                    </code>
+                    <code>
+                        <value>6304</value>
+                        <description>Other furnishing articles, excluding those of heading 9404</description>
+                    </code>
+                </cnCodes>
+                <category>
+                    <identifier>TAPESTRIES</identifier>
+                    <description>Tapestries (CN code 5805 00 00) and wall textiles (CN code 6304 00 00) made by hand
+                        from original designs provided by artists…
+                    </description>
+                </category>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>13.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cnCodes>
+                    <code>
+                        <value>9701</value>
+                        <description>Paintings, drawings and pastels, executed entirely by hand, other than drawings of
+                            heading 4906 and other than hand-painted or hand-decorated manufactured articles; collages,
+                            mosaics and similar decorative plaques
+                        </description>
+                    </code>
+                </cnCodes>
+                <category>
+                    <identifier>PICTURES</identifier>
+                    <description>Pictures, collages and similar decorative plaques, paintings and drawings, executed
+                        entirely by hand by the artist…
+                    </description>
+                </category>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>13.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cnCodes>
+                    <code>
+                        <value>9702 00 00</value>
+                        <description>Original engravings, prints and lithographs</description>
+                    </code>
+                </cnCodes>
+                <category>
+                    <identifier>IMPRESSIONS</identifier>
+                    <description>Original engravings, prints and lithographs, being impressions produced in the limited
+                        numbers directly in black and white…
+                    </description>
+                </category>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>13.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cnCodes>
+                    <code>
+                        <value>9703 00 00</value>
+                        <description>Original sculptures and statuary, in any material</description>
+                    </code>
+                </cnCodes>
+                <category>
+                    <identifier>SCULPTURES</identifier>
+                    <description>Original sculptures and statuary, in any material, provided that they are executed
+                        entirely by the artists
+                    </description>
+                </category>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>13.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cnCodes>
+                    <code>
+                        <value>9704 00 00</value>
+                        <description>Postage or revenue stamps, stamp-postmarks, first-day covers, postal stationery
+                            (stamped paper), and the like, used or unused, other than those of heading 4907
+                        </description>
+                    </code>
+                    <code>
+                        <value>9705 00 00</value>
+                        <description>Collections and collectors' pieces of zoological, botanical, mineralogical,
+                            anatomical, historical, archaeological, palaeontological, ethnographic or numismatic
+                            interest
+                        </description>
+                    </code>
+                </cnCodes>
+                <category>
+                    <identifier>ZOOLOGICAL</identifier>
+                    <description>Collections and collector’s pieces of zoological, botanical, mineralogical,
+                        ethnographic or numismatic interest (CN code 9705 00 00)
+                    </description>
+                </category>
+                <comment>Import only</comment>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>13.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cnCodes>
+                    <code>
+                        <value>9706 00 00</value>
+                        <description>Antiques of an age exceeding 100 years</description>
+                    </code>
+                </cnCodes>
+                <category>
+                    <identifier>100_YEARS_OLD</identifier>
+                    <description>Goods, other than works of art or collector’s items, which are more than 100 years old
+                        (CN code 9706 00 00)
+                    </description>
+                </category>
+                <comment>Import only</comment>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>13.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cpaCodes>
+                    <code>
+                        <value>51.10</value>
+                        <description>Passenger air transport services</description>
+                    </code>
+                </cpaCodes>
+                <category>
+                    <identifier>TRANSPORT_PASSENGERS</identifier>
+                    <description>Transport of passengers and their accompanying luggage</description>
+                </category>
+                <comment>domestic transport of passengers by aircrafts</comment>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>13.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cpaCodes>
+                    <code>
+                        <value>90.0</value>
+                        <description>Creative, arts and entertainment services</description>
+                    </code>
+                </cpaCodes>
+                <category>
+                    <identifier>WRITERS_SERVICES</identifier>
+                    <description>Supply of services by writers, composers and performing artists, or of the royalties
+                        due to them
+                    </description>
+                </category>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>13.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cpaCodes>
+                    <code>
+                        <value>91.02</value>
+                        <description>Museum services</description>
+                    </code>
+                    <code>
+                        <value>91.02.2</value>
+                        <description>Museum collections</description>
+                    </code>
+                    <code>
+                        <value>91.03</value>
+                        <description>Operation services of historical sites and buildings and similar visitor
+                            attractions
+                        </description>
+                    </code>
+                </cpaCodes>
+                <category>
+                    <identifier>CULTURAL_EVENTS</identifier>
+                    <description>Admission to shows, theatres, circuses, fairs, amusement parks, concerts, museums,
+                        zoos, cinemas, exhibitions and similar cultural events and facilities
+                    </description>
+                </category>
+                <comment>if not exempted: theaters, concerts, museums, zoos or botanical gardens</comment>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>13.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cpaCodes>
+                    <code>
+                        <value>93.11</value>
+                        <description>Sports facility operation services</description>
+                    </code>
+                </cpaCodes>
+                <category>
+                    <identifier>SPORTING_EVENTS</identifier>
+                    <description>Admission to sporting events</description>
+                </category>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>19.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <category>
+                    <identifier>REGION</identifier>
+                    <description>Special reduced rate for specific regions (including articles 104, 105 and 120 of the
+                        VAT Directive)
+                    </description>
+                </category>
+                <comment>Jungholz, Mittelberg</comment>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>STANDARD</type>
+                <rate>
+                    <type>DEFAULT</type>
+                    <value>20.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>EXEMPTED</type>
+                    <value>0.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cnCodes>
+                    <code>
+                        <value>4818 90 10</value>
+                        <description>Articles of a kind used for surgical, medical or hygienic purposes, not put up for
+                            retail sale
+                        </description>
+                    </code>
+                    <code>
+                        <value>4818 90 90</value>
+                        <description>Other</description>
+                    </code>
+                    <code>
+                        <value>6307 90 10</value>
+                        <description>Knitted or crocheted</description>
+                    </code>
+                    <code>
+                        <value>6307 90 98</value>
+                        <description>Other</description>
+                    </code>
+                </cnCodes>
+                <cpaCodes>
+                    <code>
+                        <value>21.20.1</value>
+                        <description>Medicaments</description>
+                    </code>
+                </cpaCodes>
+                <category>
+                    <identifier>PHARMACEUTICAL_PRODUCTS</identifier>
+                    <description>Pharmaceutical products of a kind normally used for health care, prevention of illness
+                        and as treatment for medical and veterinary purposes,…
+                    </description>
+                </category>
+                <comment>application of temporary Zero tax rate for face masks til 30 June 2023</comment>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>EXEMPTED</type>
+                    <value>0.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cnCodes>
+                    <code>
+                        <value>8541</value>
+                        <description>Semiconductor devices (for example, diodes, transistors, semiconductor-based
+                            transducers); photosensitive semiconductor devices, including photovoltaic cells whether or
+                            not assembled in modules or made up into panels; light-emitting diodes (LED), whether or not
+                            assembled with other light-emitting diodes (LED); mounted piezo-electric crystals
+                        </description>
+                    </code>
+                </cnCodes>
+                <category>
+                    <identifier>SOLAR_PANELS</identifier>
+                    <description>Supply and installation of solar panels on and adjacent to private dwellings, housing
+                        and public and other buildings used for activities in the public interest
+                    </description>
+                </category>
+                <comment>From January 1, 2024 to December 31, 2025 the supply, the intra-community acquisition, the
+                    import and the installation of photovoltaic modules are zero tax rated
+                    (https://www.bmf.gv.at/themen/steuern/fuer-unternehmen/umsatzsteuer/informationen)
+                </comment>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>EXEMPTED</type>
+                    <value>0.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cpaCodes>
+                    <code>
+                        <value>49.3</value>
+                        <description>Other passenger land transport services</description>
+                    </code>
+                </cpaCodes>
+                <category>
+                    <identifier>TRANSPORT_PASSENGERS</identifier>
+                    <description>Transport of passengers and their accompanying luggage</description>
+                </category>
+                <comment>From January 1, 2023 the Austrian section of the journey in cross-border rail passenger
+                    transport is zero tax rated
+                </comment>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>10.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cnCodes>
+                    <code>
+                        <value>2201 90 00</value>
+                        <description>Other</description>
+                    </code>
+                </cnCodes>
+                <category>
+                    <identifier>SUPPLY_WATER</identifier>
+                    <description>Supply of water</description>
+                </category>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>10.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cnCodes>
+                    <code>
+                        <value>4901</value>
+                        <description>Printed books, brochures, leaflets and similar printed matter, whether or not in
+                            single sheets
+                        </description>
+                    </code>
+                    <code>
+                        <value>4902</value>
+                        <description>Newspapers, journals and periodicals, whether or not illustrated or containing
+                            advertising material
+                        </description>
+                    </code>
+                    <code>
+                        <value>4903 00 00</value>
+                        <description>Children's picture, drawing or colouring books</description>
+                    </code>
+                    <code>
+                        <value>4904 00 00</value>
+                        <description>Music, printed or in manuscript, whether or not bound or illustrated</description>
+                    </code>
+                    <code>
+                        <value>4905</value>
+                        <description>Maps and hydrographic or similar charts of all kinds, including atlases, wall maps,
+                            topographical plans and globes, printed
+                        </description>
+                    </code>
+                </cnCodes>
+                <category>
+                    <identifier>LOAN_LIBRARIES</identifier>
+                    <description>Supply, including on loan by libraries, of books, newspapers and periodicals either on
+                        physical means of support …
+                    </description>
+                </category>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>10.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cnCodes>
+                    <code>
+                        <value>4902</value>
+                        <description>Newspapers, journals and periodicals, whether or not illustrated or containing
+                            advertising material
+                        </description>
+                    </code>
+                </cnCodes>
+                <category>
+                    <identifier>NEWSPAPERS</identifier>
+                    <description>Newspapers</description>
+                </category>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>10.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cnCodes>
+                    <code>
+                        <value>4902</value>
+                        <description>Newspapers, journals and periodicals, whether or not illustrated or containing
+                            advertising material
+                        </description>
+                    </code>
+                </cnCodes>
+                <category>
+                    <identifier>PERIODICALS</identifier>
+                    <description>Periodicals</description>
+                </category>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>10.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cpaCodes>
+                    <code>
+                        <value>37</value>
+                        <description>Sewerage services; sewage sludge</description>
+                    </code>
+                    <code>
+                        <value>38</value>
+                        <description>Waste collection, treatment and disposal services; materials recovery services
+                        </description>
+                    </code>
+                </cpaCodes>
+                <category>
+                    <identifier>STREET_CLEANING</identifier>
+                    <description>Supply of services provided in connection with street cleaning, refuse collection and
+                        waste treatment, other than the supply of such services by bodies referred to in Article 13
+                    </description>
+                </category>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>10.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cpaCodes>
+                    <code>
+                        <value>55</value>
+                        <description>Accommodation services</description>
+                    </code>
+                    <code>
+                        <value>55.10</value>
+                        <description>Hotel and similar accommodation services</description>
+                    </code>
+                </cpaCodes>
+                <category>
+                    <identifier>ACCOMMODATION</identifier>
+                    <description>Accommodation provided in hotels and similar establishments, including the provision of
+                        holiday accommodation and the letting of places on camping or caravan sites
+                    </description>
+                </category>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>10.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cpaCodes>
+                    <code>
+                        <value>56.1</value>
+                        <description>Restaurant and mobile food serving services</description>
+                    </code>
+                    <code>
+                        <value>56.2</value>
+                        <description>Event catering services and other food serving services</description>
+                    </code>
+                </cpaCodes>
+                <category>
+                    <identifier>RESTAURANT</identifier>
+                    <description>Restaurant and catering services, it being possible to exclude the supply of (alcoholic
+                        and/or non-alcoholic) beverages
+                    </description>
+                </category>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>10.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cpaCodes>
+                    <code>
+                        <value>58.11.2</value>
+                        <description>Books on disk, tape or other physical media</description>
+                    </code>
+                    <code>
+                        <value>58.11.3</value>
+                        <description>On-line books</description>
+                    </code>
+                    <code>
+                        <value>58.13.2</value>
+                        <description>On-line newspapers</description>
+                    </code>
+                    <code>
+                        <value>58.14.2</value>
+                        <description>On-line journals and periodicals</description>
+                    </code>
+                </cpaCodes>
+                <category>
+                    <identifier>LOAN_LIBRARIES</identifier>
+                    <description>Supply, including on loan by libraries, of books, newspapers and periodicals either on
+                        physical means of support …
+                    </description>
+                </category>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>10.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cpaCodes>
+                    <code>
+                        <value>60</value>
+                        <description>Programming and broadcasting services</description>
+                    </code>
+                    <code>
+                        <value>60.10</value>
+                        <description>Radio broadcasting services</description>
+                    </code>
+                    <code>
+                        <value>60.2</value>
+                        <description>Television programming and broadcasting services; broadcasting originals
+                        </description>
+                    </code>
+                </cpaCodes>
+                <category>
+                    <identifier>BROADCASTING_SERVICES</identifier>
+                    <description>Reception of radio and television broadcasting services</description>
+                </category>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>10.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cpaCodes>
+                    <code>
+                        <value>88</value>
+                        <description>Social work services without accommodation</description>
+                    </code>
+                </cpaCodes>
+                <category>
+                    <identifier>SOCIAL_WELLBEING</identifier>
+                    <description>Supply of goods and services by organisations recognised as being devoted to social
+                        wellbeing by Member States and engaged in welfare …
+                    </description>
+                </category>
+                <comment>if not exempted (for information about the type of organisations falling under the exemption
+                    please see Sec. 6 of the Austrian VAT Act 1994)
+                </comment>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>10.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cpaCodes>
+                    <code>
+                        <value>95.2</value>
+                        <description>Repair services of personal and household goods</description>
+                    </code>
+                </cpaCodes>
+                <category>
+                    <identifier>CLOTHING_REPAIR</identifier>
+                    <description>Minor repairs of clothing and household linen (including mending and alteration)
+                    </description>
+                </category>
+            </vatRateResults>
+            <vatRateResults>
+                <memberState>AT</memberState>
+                <type>REDUCED</type>
+                <rate>
+                    <type>REDUCED_RATE</type>
+                    <value>10.0</value>
+                </rate>
+                <situationOn>2024-01-01+01:00</situationOn>
+                <cpaCodes>
+                    <code>
+                        <value>95.23.1</value>
+                        <description>Repair services of footwear and leather goods</description>
+                    </code>
+                </cpaCodes>
+                <category>
+                    <identifier>SHOES_REPAIR</identifier>
+                    <description>Minor repairs of shoes and leather goods</description>
+                </category>
+            </vatRateResults>
+        </ns0:retrieveVatRatesRespMsg>
+    </env:Body>
+</env:Envelope>
