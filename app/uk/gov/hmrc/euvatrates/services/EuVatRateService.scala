@@ -57,7 +57,7 @@ class EuVatRateService @Inject()(
     eCSoapConnector.getVatRates(messageBody.toString()).flatMap { response =>
       response.status match {
         case OK =>
-          val parsedResponse = parseResponse(response.body)
+          val parsedResponse = parseResponse(response.body).sortBy(-_.vatRate)
           cacheResponse(parsedResponse)
           parsedResponse.toFuture
         case status =>
