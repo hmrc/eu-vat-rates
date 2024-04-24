@@ -16,12 +16,36 @@
 
 package uk.gov.hmrc.euvatrates.models
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
+import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
 import java.time.LocalDate
 
 case class EuVatRate(country: Country, vatRate: BigDecimal, vatRateType: VatRateType, situatedOn: LocalDate)
 
 object EuVatRate {
+  private val dbReads: Reads[EuVatRate] = {
+    (
+      (__ \ "countryCode").read[String].map(code => Country.getCountryFromCode(code).get) and
+        (__ \ "vatRate").read[BigDecimal] and
+        (__ \ "vatRateType").read[VatRateType] and
+        (__ \ "situatedOn").read(MongoJavatimeFormats.localDateFormat)
+      ) (EuVatRate.apply _)
+  }
+  private val dbWrites: OWrites[EuVatRate] = {
+
+    import play.api.libs.functional.syntax._
+
+    (
+      (__ \ "countryCode").write[String].contramap[Country](_.code) and
+        (__ \ "vatRate").write[BigDecimal] and
+        (__ \ "vatRateType").write[VatRateType] and
+        (__ \ "situatedOn").write(MongoJavatimeFormats.localDateFormat)
+      ) (unlift(EuVatRate.unapply))
+  }
+
+  val dbFormat: Format[EuVatRate] = Format(dbReads, dbWrites)
+
   implicit val format: Format[EuVatRate] = Json.format[EuVatRate]
 }

@@ -17,14 +17,13 @@
 package uk.gov.hmrc.euvatrates.services
 
 import play.api.http.Status.OK
-import uk.gov.hmrc.euvatrates.config.AppConfig
 import uk.gov.hmrc.euvatrates.connectors.ECSoapConnector
 import uk.gov.hmrc.euvatrates.logging.Logging
 import uk.gov.hmrc.euvatrates.models.{Country, EuVatRate, VatRateType}
 import uk.gov.hmrc.euvatrates.repositories.EuVatRateRepository
 import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
 
-import java.time.{Clock, LocalDate}
+import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.xml.{Node, XML}

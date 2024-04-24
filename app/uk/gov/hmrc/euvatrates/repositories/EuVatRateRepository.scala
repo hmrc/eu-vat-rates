@@ -17,49 +17,61 @@
 package uk.gov.hmrc.euvatrates.repositories
 
 import org.mongodb.scala.bson.conversions.Bson
-import org.mongodb.scala.model.{Filters, Indexes, IndexModel, IndexOptions, ReplaceOptions}
+import org.mongodb.scala.model._
+import play.api.libs.json.Format
 import uk.gov.hmrc.euvatrates.config.AppConfig
 import uk.gov.hmrc.euvatrates.models.{Country, EuVatRate}
+import uk.gov.hmrc.mongo.play.json.Codecs.toBson
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
-import java.time.{Clock, LocalDate}
+import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class EuVatRateRepository @Inject()(
                                      mongoComponent: MongoComponent,
-                                     appConfig: AppConfig,
-                                     clock: Clock
+                                     appConfig: AppConfig
                                    )(implicit ec: ExecutionContext)
   extends PlayMongoRepository[EuVatRate](
     collectionName = "eu-vat-rates",
     mongoComponent = mongoComponent,
-    domainFormat = EuVatRate.format,
+    domainFormat = EuVatRate.dbFormat,
     replaceIndexes = true,
+    extraCodecs = Seq(BigDecimalCodec),
     indexes = Seq(
+      IndexModel(
+        Indexes.ascending("countryCode", "vatRate", "situatedOn"),
+        IndexOptions()
+          .name("euVatRateReferenceIdx")
+          .unique(true)
+      ),
       IndexModel(
         Indexes.ascending("situatedOn"),
         IndexOptions()
           .name("situatedOnIdx")
           .unique(false)
+          .expireAfter(appConfig.cacheTtl, TimeUnit.DAYS)
       )
     )
   ) {
 
+  implicit val instantFormat: Format[LocalDate] = MongoJavatimeFormats.localDateFormat
+
   private def byUniqueEntry(country: Country, vatRate: BigDecimal, situatedOn: LocalDate): Bson =
     Filters.and(
-      Filters.equal("country", country),
-      Filters.equal("vatRate", vatRate),
-      Filters.equal("situatedOn", situatedOn)
+      Filters.equal("countryCode", toBson(country.code)),
+      Filters.equal("vatRate", toBson(vatRate)),
+      Filters.equal("situatedOn", toBson(situatedOn))
     )
 
-  def get(country: Country, fromDate: LocalDate) = {
+  def get(country: Country, fromDate: LocalDate): Future[Seq[EuVatRate]] = {
     collection.find(
         Filters.and(
-          Filters.equal("country", country),
-          Filters.gte("situatedOn", fromDate)
+          Filters.equal("countryCode", toBson(country.code)),
+          Filters.gte("situatedOn", toBson(fromDate))
         )
       )
       .toFuture()
