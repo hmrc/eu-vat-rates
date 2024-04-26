@@ -14,17 +14,8 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.euvatrates.config
+package uk.gov.hmrc.euvatrates.models
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
-
-@Singleton
-class AppConfig @Inject()(config: Configuration) {
-
-  val appName: String = config.get[String]("appName")
-
-  val proxyRequiredForThisEnvironment: Boolean = config.getOptional[Boolean]("proxy.proxyRequiredForThisEnvironment").getOrElse(false)
-
-  val cacheTtl: Int = config.get[Int]("mongodb.timeToLiveInDays")
+class WithName(string: String) {
+  override val toString: String = string
 }

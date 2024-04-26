@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.euvatrates.controllers
+package uk.gov.hmrc.euvatrates.models
 
-import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.Future
+sealed trait VatRateType
 
-@Singleton()
-class MicroserviceHelloWorldController @Inject()(cc: ControllerComponents)
-    extends BackendController(cc) {
+object VatRateType extends Enumerable.Implicits {
 
-  def hello(): Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok("Hello world"))
-  }
+  case object Standard extends WithName("STANDARD") with VatRateType
+
+  case object Reduced extends WithName("REDUCED") with VatRateType
+
+  val values: Seq[VatRateType] = Seq(Standard, Reduced)
+
+  implicit val enumerable: Enumerable[VatRateType] =
+    Enumerable(values.map(v => v.toString -> v): _*)
 }

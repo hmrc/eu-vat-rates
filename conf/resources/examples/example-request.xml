@@ -1,0 +1,15 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:urn="urn:ec.europa.eu:taxud:tedb:services:v1:IVatRetrievalService"
+                  xmlns:urn1="urn:ec.europa.eu:taxud:tedb:services:v1:IVatRetrievalService:types">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <urn:retrieveVatRatesReqMsg>
+            <urn1:memberStates>
+                <!--1 or more repetitions:-->
+                <urn1:isoCode>AT</urn1:isoCode>
+            </urn1:memberStates>
+            <urn1:from>2024-01-01</urn1:from>
+            <urn1:to>2025-01-01</urn1:to>
+        </urn:retrieveVatRatesReqMsg>
+    </soapenv:Body>
+</soapenv:Envelope>

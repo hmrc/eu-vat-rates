@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.euvatrates.config
+package uk.gov.hmrc.euvatrates.base
 
-import javax.inject.{Inject, Singleton}
-import play.api.Configuration
+import scala.io.Source
+import scala.util.Try
 
-@Singleton
-class AppConfig @Inject()(config: Configuration) {
+object SoapExamples {
 
-  val appName: String = config.get[String]("appName")
+  val exampleRequest: Try[String] = Try(Source.fromInputStream(getClass.getResourceAsStream("/resources/examples/example-request.xml")).mkString)
 
-  val proxyRequiredForThisEnvironment: Boolean = config.getOptional[Boolean]("proxy.proxyRequiredForThisEnvironment").getOrElse(false)
+  val exampleResponse: Try[String] = Try(Source.fromInputStream(getClass.getResourceAsStream("/resources/examples/example-response.xml")).mkString)
 
-  val cacheTtl: Int = config.get[Int]("mongodb.timeToLiveInDays")
+
 }
