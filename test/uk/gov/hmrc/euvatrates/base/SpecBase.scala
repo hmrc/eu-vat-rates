@@ -23,6 +23,10 @@ import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
+import uk.gov.hmrc.euvatrates.models.{Country, EuVatRate, VatRateType}
+import uk.gov.hmrc.euvatrates.models.Country.euCountries
+
+import java.time.LocalDate
 
 trait SpecBase extends AnyFreeSpec
   with Matchers
@@ -34,4 +38,13 @@ trait SpecBase extends AnyFreeSpec
 
   protected def applicationBuilder(): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
+
+  val country1: Country = euCountries.head
+  val country2: Country = euCountries.reverse.head
+  val countries: Seq[Country] = Seq(country1, country2)
+  val dateFrom: LocalDate = LocalDate.of(2023, 1, 1)
+  val dateTo: LocalDate = LocalDate.of(2024, 1, 1)
+
+  val euVatRate1: EuVatRate = EuVatRate(country1, BigDecimal(5.5), VatRateType.Reduced, LocalDate.of(2023, 5, 1))
+  val euVatRate2: EuVatRate = EuVatRate(country2, BigDecimal(20), VatRateType.Standard, LocalDate.of(2023, 1, 1))
 }

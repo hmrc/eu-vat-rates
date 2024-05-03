@@ -39,13 +39,22 @@ class EuVatRateRepositorySpec
     with MockitoSugar {
 
   private val country = euCountries.head
+  private val country2 = euCountries.reverse.head
   private val fromDate = LocalDate.of(2024, 1, 1)
+  private val fromDate2 = LocalDate.of(2024, 2, 1)
 
   private val euVatRate: EuVatRate = EuVatRate(
     country = country,
     vatRate = BigDecimal(5.5),
     vatRateType = VatRateType.Standard,
     situatedOn = fromDate
+  )
+
+  private val euVatRate2: EuVatRate = EuVatRate(
+    country = country2,
+    vatRate = BigDecimal(10),
+    vatRateType = VatRateType.Reduced,
+    situatedOn = fromDate2
   )
 
   private val mockAppConfig = mock[AppConfig]
@@ -63,6 +72,17 @@ class EuVatRateRepositorySpec
 
       setResult mustEqual euVatRate
       updatedRecord mustEqual euVatRate
+    }
+  }
+
+  ".setMany" - {
+
+    "must save data" in {
+      val setResult = repository.setMany(Seq(euVatRate, euVatRate2)).futureValue
+      val updatedRecord = findAll().futureValue
+
+      setResult mustEqual Seq(euVatRate, euVatRate2)
+      updatedRecord mustEqual Seq(euVatRate, euVatRate2)
     }
   }
 
