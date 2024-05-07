@@ -89,4 +89,17 @@ class EuVatRateRepository @Inject()(
       .map(_ => euVatRate)
   }
 
+  def setMany(euVatRates: Seq[EuVatRate]): Future[Seq[EuVatRate]] = {
+    collection
+      .bulkWrite(euVatRates.map { euVatRate =>
+        ReplaceOneModel(
+          filter = byUniqueEntry(euVatRate.country, euVatRate.vatRate, euVatRate.situatedOn),
+          replacement = euVatRate,
+          replaceOptions = ReplaceOptions().upsert(true)
+        )
+      }, BulkWriteOptions().ordered(false))
+      .toFuture()
+      .map(_ => euVatRates)
+  }
+
 }

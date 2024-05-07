@@ -22,13 +22,10 @@ import org.mockito.Mockito.{times, verify, when}
 import org.scalatest.BeforeAndAfterEach
 import uk.gov.hmrc.euvatrates.base.SpecBase
 import uk.gov.hmrc.euvatrates.connectors.ECSoapConnector
-import uk.gov.hmrc.euvatrates.models.{EuVatRate, VatRateType}
-import uk.gov.hmrc.euvatrates.models.Country.euCountries
 import uk.gov.hmrc.euvatrates.repositories.EuVatRateRepository
 import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
 import uk.gov.hmrc.http.HttpResponse
 
-import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class EuVatRateServiceSpec extends SpecBase with BeforeAndAfterEach {
@@ -43,14 +40,6 @@ class EuVatRateServiceSpec extends SpecBase with BeforeAndAfterEach {
 
   "EuVatRateService" - {
     "#getAllVatRates" - {
-      val country1 = euCountries.head
-      val country2 = euCountries.reverse.head
-      val countries = Seq(country1, country2)
-      val dateFrom = LocalDate.of(2023, 1, 1)
-      val dateTo = LocalDate.of(2024, 1, 1)
-
-      val euVatRate1 = EuVatRate(country1, BigDecimal(5.5), VatRateType.Reduced, LocalDate.of(2023, 5, 1))
-      val euVatRate2 = EuVatRate(country2, BigDecimal(20), VatRateType.Standard, LocalDate.of(2023, 1, 1))
 
       "should return successfully" - {
         "when connector returns successfully" in {

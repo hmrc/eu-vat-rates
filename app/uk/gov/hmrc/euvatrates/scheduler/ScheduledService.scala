@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.euvatrates.config
+package uk.gov.hmrc.euvatrates.scheduler
 
-import com.google.inject.AbstractModule
-import uk.gov.hmrc.euvatrates.scheduler.EuVatRatesWorker
+import scala.concurrent.{Future, ExecutionContext => ExC}
 
-import java.time.{Clock, ZoneOffset}
-
-class Module extends AbstractModule {
-
-  override def configure(): Unit = {
-
-    bind(classOf[AppConfig]).asEagerSingleton()
-    bind(classOf[Clock]).toInstance(Clock.systemDefaultZone.withZone(ZoneOffset.UTC))
-    bind(classOf[EuVatRatesWorker]).asEagerSingleton()
-  }
+trait ScheduledService[R] {
+  val jobName: String
+  def invoke : Future[R]
 }
