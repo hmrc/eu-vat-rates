@@ -25,8 +25,6 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
-//trait EuVatRatesWorker
-
 @Singleton
 class EuVatRatesWorker @Inject()(
                                   configuration: Configuration,
