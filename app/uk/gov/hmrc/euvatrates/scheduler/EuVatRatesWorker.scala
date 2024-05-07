@@ -17,27 +17,32 @@
 package uk.gov.hmrc.euvatrates.scheduler
 
 import org.apache.pekko.actor.ActorSystem
-import play.api.inject.ApplicationLifecycle
 import play.api.{Configuration, Logging}
+import play.api.inject.ApplicationLifecycle
 import uk.gov.hmrc.euvatrates.services.EuVatRatesTriggerService
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
+//trait EuVatRatesWorker
+
 @Singleton
 class EuVatRatesWorker @Inject()(
-                                          configuration: Configuration,
-                                          euVatRatesTriggerService: EuVatRatesTriggerService,
-                                          lifecycle: ApplicationLifecycle,
-                                          actorSystem: ActorSystem
-                                        )(implicit ec: ExecutionContext) extends Logging {
+                                  configuration: Configuration,
+                                  euVatRatesTriggerService: EuVatRatesTriggerService,
+                                  lifecycle: ApplicationLifecycle,
+                                  actorSystem: ActorSystem
+                                )(implicit ec: ExecutionContext) extends Logging {
 
   private val scheduler = actorSystem.scheduler
 
   private val interval = configuration.get[FiniteDuration]("schedules.eu-vat-rates-worker.interval")
 
-  private val cancel = scheduler.scheduleWithFixedDelay(0.seconds, interval) { () =>
+  private val cancel = scheduler.scheduleWithFixedDelay(
+    initialDelay = 0.seconds,
+    delay = interval
+  ) { () =>
     euVatRatesTriggerService.triggerFeedUpdate.recover {
       case e => logger.error("Error when updating EU Vat rates", e)
     }

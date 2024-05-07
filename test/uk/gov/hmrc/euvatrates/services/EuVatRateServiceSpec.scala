@@ -22,13 +22,10 @@ import org.mockito.Mockito.{times, verify, when}
 import org.scalatest.BeforeAndAfterEach
 import uk.gov.hmrc.euvatrates.base.SpecBase
 import uk.gov.hmrc.euvatrates.connectors.ECSoapConnector
-import uk.gov.hmrc.euvatrates.models.{EuVatRate, VatRateType}
-import uk.gov.hmrc.euvatrates.models.Country.euCountries
 import uk.gov.hmrc.euvatrates.repositories.EuVatRateRepository
 import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
 import uk.gov.hmrc.http.HttpResponse
 
-import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class EuVatRateServiceSpec extends SpecBase with BeforeAndAfterEach {

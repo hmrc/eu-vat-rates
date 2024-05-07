@@ -20,25 +20,25 @@ import play.api.http.HeaderNames.CONTENT_TYPE
 import play.api.Configuration
 import uk.gov.hmrc.euvatrates.config.{AppConfig, Service}
 import uk.gov.hmrc.euvatrates.logging.Logging
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
+import uk.gov.hmrc.http.client.HttpClientV2
 
+import java.net.URL
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ECSoapConnector @Inject()(
                                  appConfig: AppConfig,
                                  config: Configuration,
-                                 defaultHttpClient: HttpClient,
-                                 proxiedHttpClient: ProxiedHttpClient
+                                 httpClient: HttpClientV2,
                                )(implicit ec: ExecutionContext) extends Logging {
 
-  lazy val httpClient: HttpClient = if (appConfig.proxyRequiredForThisEnvironment) proxiedHttpClient else defaultHttpClient
   private val baseUrl: Service = config.get[Service]("microservice.services.ec-vat-rates")
 
   def getVatRates(soapEnvelope: String): Future[HttpResponse] = {
     implicit val hc: HeaderCarrier = HeaderCarrier()
 
-    val url = baseUrl + "/taxation_customs/tedb/ws/VatRetrievalService.wsdl"
+    val url: URL = url"$baseUrl/taxation_customs/tedb/ws/VatRetrievalService.wsdl"
 
     val headers = Seq(
       "SOAPAction" -> "urn:ec.europa.eu:taxud:tedb:services:v1:VatRetrievalService/RetrieveVatRates",
@@ -47,7 +47,12 @@ class ECSoapConnector @Inject()(
 
     logger.info(s"Posting with url $url and env $soapEnvelope with headers $headers")
 
-    httpClient.POSTString[HttpResponse](url, soapEnvelope, headers)
+    httpClient
+      .post(url)
+      .setHeader(headers: _*)
+      .withBody(soapEnvelope)
+      .withProxy
+      .execute[HttpResponse]
   }
 
 }

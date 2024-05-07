@@ -21,15 +21,11 @@ import org.mockito.Mockito
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
 import uk.gov.hmrc.euvatrates.base.SpecBase
-import uk.gov.hmrc.euvatrates.logging.Logging
-import uk.gov.hmrc.euvatrates.models.{Country, EuVatRate}
 import uk.gov.hmrc.euvatrates.repositories.EuVatRateRepository
 import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
 
-import java.time.{Clock, Instant, LocalDate, ZoneId}
+import java.time.{Clock, Instant, ZoneId}
 import java.time.temporal.ChronoUnit
-import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class EuVatRatesTriggerServiceSpec extends SpecBase with BeforeAndAfterEach {

@@ -35,6 +35,8 @@ class EuVatRatesTriggerService @Inject()(
   def triggerFeedUpdate: Future[Seq[EuVatRate]] = {
     val allCountries = Country.euCountriesWithNI
 
+    logger.info(s"Triggered a feed update for country codes: ${allCountries.map(_.code)}")
+
     getRatesAndSave(allCountries)
   }
 

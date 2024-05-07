@@ -21,7 +21,6 @@ import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar
-import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import uk.gov.hmrc.euvatrates.models.{Country, EuVatRate, VatRateType}
 import uk.gov.hmrc.euvatrates.models.Country.euCountries
