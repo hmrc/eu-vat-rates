@@ -50,7 +50,7 @@ class EuVatRateController @Inject()(
     } else {
 
       euVatRateService.getAllVatRates(
-        countries = Seq(Country.getCountryFromCode(country).get),
+        countries = Country.getCountryFromCode(country).toSeq,
         dateFrom = dateFrom,
         dateTo = dateTo
       ).map(resp =>
