@@ -21,6 +21,7 @@ import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.euvatrates.logging.Logging
 import uk.gov.hmrc.euvatrates.models.Country
 import uk.gov.hmrc.euvatrates.services.EuVatRateService
+import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import java.time.{Clock, LocalDate}
@@ -41,12 +42,24 @@ class EuVatRateController @Inject()(
     val defaultStartDate = LocalDate.of(2021, 1, 1)
     val defaultEndDate = LocalDate.now(clock)
 
-    euVatRateService.getAllVatRates(
-      countries = Seq(Country.getCountryFromCode(country).get),
-      dateFrom = startDate.map(LocalDate.parse).getOrElse(defaultStartDate),
-      dateTo = endDate.map(LocalDate.parse).getOrElse(defaultEndDate)
-    ).map( resp =>
-      Ok(Json.toJson(resp))
-    )
+    val dateFrom = startDate.map(LocalDate.parse).getOrElse(defaultStartDate)
+    val dateTo = endDate.map(LocalDate.parse).getOrElse(defaultEndDate)
+
+    if(dateFrom.isAfter(dateTo)) {
+      BadRequest("Date from cannot be after date to").toFuture
+    } else {
+
+      euVatRateService.getAllVatRates(
+        countries = Seq(Country.getCountryFromCode(country).get),
+        dateFrom = dateFrom,
+        dateTo = dateTo
+      ).map(resp =>
+        Ok(Json.toJson(resp))
+      ).recover {
+        case e: Exception =>
+          logger.error(s"Error occurred while getting VAT rates ${e.getMessage}", e)
+          InternalServerError(e.getMessage)
+      }
+    }
   }
 }
