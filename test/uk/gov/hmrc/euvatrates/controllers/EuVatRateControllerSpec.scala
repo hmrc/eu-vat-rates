@@ -28,6 +28,9 @@ import uk.gov.hmrc.euvatrates.base.SpecBase
 import uk.gov.hmrc.euvatrates.services.EuVatRateService
 import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
 
+import java.time.LocalDate
+import scala.concurrent.Future
+
 class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
 
   private val countryCode = "AT"
@@ -39,19 +42,83 @@ class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
   }
 
   "GET /" - {
-    "return 200" in {
+    "return 200" - {
+      "when endpoint returns successfully with empty data" in {
 
-      when(mockEuVatRateService.getAllVatRates(any(), any(), any())) thenReturn Seq.empty.toFuture
+        when(mockEuVatRateService.getAllVatRates(any(), any(), any())) thenReturn Seq.empty.toFuture
 
-      val app =
-        applicationBuilder
-          .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
-          .build()
+        val app =
+          applicationBuilder()
+            .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
+            .build()
 
-      running(app) {
-        val result = route(app, fakeRequest).value
-        status(result) mustEqual Status.OK
+        running(app) {
+          val result = route(app, fakeRequest).value
+          status(result) mustEqual Status.OK
+        }
       }
+
+      "when endpoint returns successfully with some data" in {
+
+        when(mockEuVatRateService.getAllVatRates(any(), any(), any())) thenReturn Seq(euVatRate1, euVatRate2).toFuture
+
+        val app =
+          applicationBuilder()
+            .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
+            .build()
+
+        running(app) {
+          val result = route(app, fakeRequest).value
+          status(result) mustEqual Status.OK
+        }
+      }
+    }
+
+    "return 400" - {
+
+      "when date from is after date to" in {
+
+        val app =
+          applicationBuilder()
+            .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
+            .build()
+
+        val dateFrom = LocalDate.of(2024, 2, 1).toString
+        val dateTo = LocalDate.of(2024, 1, 1).toString
+
+        lazy val fakeRequest = FakeRequest(
+          GET,
+          routes.EuVatRateController.getVatRateForCountry(
+            countryCode,
+            startDate = Some(dateFrom),
+            endDate = Some(dateTo)
+          ).url)
+
+        running(app) {
+          val result = route(app, fakeRequest).value
+          status(result) mustEqual Status.BAD_REQUEST
+        }
+      }
+
+    }
+
+    "return 500" - {
+
+      "when endpoint returns with an error" in {
+
+        when(mockEuVatRateService.getAllVatRates(any(), any(), any())) thenReturn Future.failed(new Exception("error"))
+
+        val app =
+          applicationBuilder()
+            .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
+            .build()
+
+        running(app) {
+          val result = route(app, fakeRequest).value
+          status(result) mustEqual Status.INTERNAL_SERVER_ERROR
+        }
+      }
+
     }
   }
 }
