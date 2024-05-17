@@ -27,6 +27,7 @@ import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 import java.time.{Clock, LocalDate}
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
+import scala.util.{Failure, Success, Try}
 
 @Singleton()
 class EuVatRateController @Inject()(
@@ -42,24 +43,43 @@ class EuVatRateController @Inject()(
     val defaultStartDate = LocalDate.of(2021, 1, 1)
     val defaultEndDate = LocalDate.now(clock)
 
-    val dateFrom = startDate.map(LocalDate.parse).getOrElse(defaultStartDate)
-    val dateTo = endDate.map(LocalDate.parse).getOrElse(defaultEndDate)
+    val maybeDateFrom = Try(startDate.map(LocalDate.parse).getOrElse(defaultStartDate))
+    val maybeDateTo = Try(endDate.map(LocalDate.parse).getOrElse(defaultEndDate))
 
-    if(dateFrom.isAfter(dateTo)) {
-      BadRequest("Date from cannot be after date to").toFuture
-    } else {
+    val countriesPassed = Country.getCountryFromCode(country).toSeq
 
-      euVatRateService.getAllVatRates(
-        countries = Country.getCountryFromCode(country).toSeq,
-        dateFrom = dateFrom,
-        dateTo = dateTo
-      ).map(resp =>
-        Ok(Json.toJson(resp))
-      ).recover {
-        case e: Exception =>
-          logger.error(s"Error occurred while getting VAT rates ${e.getMessage}", e)
-          InternalServerError(e.getMessage)
+    maybeDateFrom match {
+      case Success(dateFrom) => {
+        maybeDateTo match {
+          case Success(dateTo) =>
+
+            if (countriesPassed.isEmpty) {
+              BadRequest(s"A valid country was not provided [$country]").toFuture
+            } else {
+
+              if (dateFrom.isAfter(dateTo)) {
+                BadRequest("Date from cannot be after date to").toFuture
+              } else {
+
+                euVatRateService.getAllVatRates(
+                  countries = countriesPassed,
+                  dateFrom = dateFrom,
+                  dateTo = dateTo
+                ).map(resp =>
+                  Ok(Json.toJson(resp))
+                ).recover {
+                  case e: Exception =>
+                    logger.error(s"Error occurred while getting VAT rates ${e.getMessage}", e)
+                    InternalServerError(e.getMessage)
+                }
+              }
+            }
+          case Failure(e) =>
+            BadRequest(s"dateTo was not processable ${e.getMessage}").toFuture
+        }
       }
+      case Failure(e) =>
+        BadRequest(s"dateFrom was not processable ${e.getMessage}").toFuture
     }
   }
 }
