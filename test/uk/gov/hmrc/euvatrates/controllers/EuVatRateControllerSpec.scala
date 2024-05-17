@@ -100,6 +100,49 @@ class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
         }
       }
 
+      "when the country isn't a valid country" in {
+
+        when(mockEuVatRateService.getAllVatRates(any(), any(), any())) thenReturn Seq.empty.toFuture
+
+        lazy val fakeRequest = FakeRequest(
+          GET,
+          routes.EuVatRateController.getVatRateForCountry(
+            "XY"
+          ).url)
+
+        val app =
+          applicationBuilder()
+            .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
+            .build()
+
+        running(app) {
+          val result = route(app, fakeRequest).value
+          status(result) mustEqual Status.BAD_REQUEST
+        }
+      }
+
+      "when the dates aren't valid" in {
+
+        when(mockEuVatRateService.getAllVatRates(any(), any(), any())) thenReturn Seq.empty.toFuture
+
+        lazy val fakeRequest = FakeRequest(
+          GET,
+          routes.EuVatRateController.getVatRateForCountry(
+            countryCode,
+            Some("notADate")
+          ).url)
+
+        val app =
+          applicationBuilder()
+            .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
+            .build()
+
+        running(app) {
+          val result = route(app, fakeRequest).value
+          status(result) mustEqual Status.BAD_REQUEST
+        }
+      }
+
     }
 
     "return 500" - {
