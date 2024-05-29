@@ -25,6 +25,7 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.euvatrates.base.SpecBase
+import uk.gov.hmrc.euvatrates.repositories.EuVatRateRepository
 import uk.gov.hmrc.euvatrates.services.EuVatRateService
 import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
 
@@ -36,40 +37,84 @@ class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
   private val countryCode = "AT"
   private lazy val fakeRequest = FakeRequest(GET, routes.EuVatRateController.getVatRateForCountry(countryCode).url)
   private val mockEuVatRateService = mock[EuVatRateService]
+  private val mockEuVatRateRepository = mock[EuVatRateRepository]
 
   override def beforeEach(): Unit = {
-    Mockito.reset(mockEuVatRateService)
+    Mockito.reset(
+      mockEuVatRateService,
+      mockEuVatRateRepository
+    )
   }
 
   "GET /" - {
     "return 200" - {
-      "when endpoint returns successfully with empty data" in {
+      "when cache responds successfully" - {
+        "with empty data" in {
 
-        when(mockEuVatRateService.getAllVatRates(any(), any(), any())) thenReturn Seq.empty.toFuture
+          when(mockEuVatRateRepository.getMany(any(), any(), any())) thenReturn Seq.empty.toFuture
 
-        val app =
-          applicationBuilder()
-            .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
-            .build()
+          val app =
+            applicationBuilder()
+              .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
+              .overrides(bind[EuVatRateRepository].toInstance(mockEuVatRateRepository))
+              .build()
 
-        running(app) {
-          val result = route(app, fakeRequest).value
-          status(result) mustEqual Status.OK
+          running(app) {
+            val result = route(app, fakeRequest).value
+            status(result) mustEqual Status.OK
+          }
+        }
+
+        "when endpoint returns successfully with some data" in {
+
+          when(mockEuVatRateRepository.getMany(any(), any(), any())) thenReturn Seq(euVatRate1, euVatRate2).toFuture
+
+          val app =
+            applicationBuilder()
+              .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
+              .overrides(bind[EuVatRateRepository].toInstance(mockEuVatRateRepository))
+              .build()
+
+          running(app) {
+            val result = route(app, fakeRequest).value
+            status(result) mustEqual Status.OK
+          }
         }
       }
 
-      "when endpoint returns successfully with some data" in {
+      "when cache responds with an error" - {
+        "when endpoint returns successfully with empty data" in {
 
-        when(mockEuVatRateService.getAllVatRates(any(), any(), any())) thenReturn Seq(euVatRate1, euVatRate2).toFuture
+          when(mockEuVatRateRepository.getMany(any(), any(), any())) thenReturn Future.failed(new Exception("Error occurred"))
+          when(mockEuVatRateService.getAllVatRates(any(), any(), any())) thenReturn Seq.empty.toFuture
 
-        val app =
-          applicationBuilder()
-            .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
-            .build()
+          val app =
+            applicationBuilder()
+              .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
+              .overrides(bind[EuVatRateRepository].toInstance(mockEuVatRateRepository))
+              .build()
 
-        running(app) {
-          val result = route(app, fakeRequest).value
-          status(result) mustEqual Status.OK
+          running(app) {
+            val result = route(app, fakeRequest).value
+            status(result) mustEqual Status.OK
+          }
+        }
+
+        "when endpoint returns successfully with some data" in {
+
+          when(mockEuVatRateRepository.getMany(any(), any(), any())) thenReturn Future.failed(new Exception("Error occurred"))
+          when(mockEuVatRateService.getAllVatRates(any(), any(), any())) thenReturn Seq(euVatRate1, euVatRate2).toFuture
+
+          val app =
+            applicationBuilder()
+              .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
+              .overrides(bind[EuVatRateRepository].toInstance(mockEuVatRateRepository))
+              .build()
+
+          running(app) {
+            val result = route(app, fakeRequest).value
+            status(result) mustEqual Status.OK
+          }
         }
       }
     }
@@ -81,6 +126,7 @@ class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
         val app =
           applicationBuilder()
             .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
+            .overrides(bind[EuVatRateRepository].toInstance(mockEuVatRateRepository))
             .build()
 
         val dateFrom = LocalDate.of(2024, 2, 1).toString
@@ -113,6 +159,7 @@ class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
         val app =
           applicationBuilder()
             .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
+            .overrides(bind[EuVatRateRepository].toInstance(mockEuVatRateRepository))
             .build()
 
         running(app) {
@@ -135,6 +182,7 @@ class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
         val app =
           applicationBuilder()
             .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
+            .overrides(bind[EuVatRateRepository].toInstance(mockEuVatRateRepository))
             .build()
 
         running(app) {
@@ -147,13 +195,15 @@ class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
 
     "return 500" - {
 
-      "when endpoint returns with an error" in {
+      "when database and endpoint returns with an error" in {
 
+        when(mockEuVatRateRepository.getMany(any(), any(), any())) thenReturn Future.failed(new Exception("Error occurred"))
         when(mockEuVatRateService.getAllVatRates(any(), any(), any())) thenReturn Future.failed(new Exception("error"))
 
         val app =
           applicationBuilder()
             .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
+            .overrides(bind[EuVatRateRepository].toInstance(mockEuVatRateRepository))
             .build()
 
         running(app) {
