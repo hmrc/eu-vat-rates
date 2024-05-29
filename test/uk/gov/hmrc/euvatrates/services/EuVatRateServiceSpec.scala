@@ -56,7 +56,7 @@ class EuVatRateServiceSpec extends SpecBase with BeforeAndAfterEach {
                     <type>REDUCED_RATE</type>
                     <value>5.5</value>
                   </rate>
-                  <situationOn>2023-05-01+01:00</situationOn>
+                  <situationOn>2021-05-01+01:00</situationOn>
                 </vatRateResults>
                 <vatRateResults>
                   <memberState>{country2.code}</memberState>
@@ -65,7 +65,7 @@ class EuVatRateServiceSpec extends SpecBase with BeforeAndAfterEach {
                     <type>STANDARD</type>
                     <value>20</value>
                   </rate>
-                  <situationOn>2023-01-01+01:00</situationOn>
+                  <situationOn>2021-01-01+01:00</situationOn>
                 </vatRateResults>
               </ns0:retrieveVatRatesRespMsg>
             </env:Body>
@@ -75,7 +75,7 @@ class EuVatRateServiceSpec extends SpecBase with BeforeAndAfterEach {
           when(mockEcVatRateConnector.getVatRates(any())) thenReturn HttpResponse(200, responseXml.toString()).toFuture
           when(mockEuVatRateRepository.set(any())) thenReturn euVatRate1.toFuture
 
-          val service = new EuVatRateService(mockEuVatRateRepository, mockEcVatRateConnector)
+          val service = new EuVatRateService(mockEuVatRateRepository, mockEcVatRateConnector, stubClockAtArbitraryDate)
 
           val result = service.getAllVatRates(countries, dateFrom = dateFrom, dateTo = dateTo)
 
@@ -86,16 +86,16 @@ class EuVatRateServiceSpec extends SpecBase with BeforeAndAfterEach {
 
         "when connector returns unsuccessfully but cache i`s available" in {
           when(mockEcVatRateConnector.getVatRates(any())) thenReturn HttpResponse(500, "Error").toFuture
-          when(mockEuVatRateRepository.get(eqTo(country1), any())) thenReturn Seq(euVatRate1).toFuture
-          when(mockEuVatRateRepository.get(eqTo(country2), any())) thenReturn Seq(euVatRate2).toFuture
+          when(mockEuVatRateRepository.get(eqTo(country1), any(), any())) thenReturn Seq(euVatRate1).toFuture
+          when(mockEuVatRateRepository.get(eqTo(country2), any(), any())) thenReturn Seq(euVatRate2).toFuture
 
-          val service = new EuVatRateService(mockEuVatRateRepository, mockEcVatRateConnector)
+          val service = new EuVatRateService(mockEuVatRateRepository, mockEcVatRateConnector, stubClockAtArbitraryDate)
 
           val result = service.getAllVatRates(countries, dateFrom = dateFrom, dateTo = dateTo)
 
           result.futureValue must contain theSameElementsAs Seq(euVatRate1, euVatRate2)
-          verify(mockEuVatRateRepository, times(1)).get(country1, dateFrom)
-          verify(mockEuVatRateRepository, times(1)).get(country2, dateFrom)
+          verify(mockEuVatRateRepository, times(1)).get(country1, dateFrom, dateTo)
+          verify(mockEuVatRateRepository, times(1)).get(country2, dateFrom, dateTo)
         }
       }
     }

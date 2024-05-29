@@ -50,9 +50,9 @@ class EuVatRateRepository @Inject()(
           .unique(true)
       ),
       IndexModel(
-        Indexes.ascending("situatedOn"),
+        Indexes.ascending("lastUpdated"),
         IndexOptions()
-          .name("situatedOnIdx")
+          .name("lastUpdatedIdx")
           .unique(false)
           .expireAfter(appConfig.cacheTtl, TimeUnit.DAYS)
       )
@@ -61,18 +61,35 @@ class EuVatRateRepository @Inject()(
 
   implicit val instantFormat: Format[LocalDate] = MongoJavatimeFormats.localDateFormat
 
-  private def byUniqueEntry(country: Country, vatRate: BigDecimal, situatedOn: LocalDate): Bson =
+  private def byUniqueEntry(
+                             country: Country,
+                             vatRate: BigDecimal,
+                             situatedOn: LocalDate,
+                             dateFrom: LocalDate,
+                             dateTo: LocalDate
+                           ): Bson =
     Filters.and(
       Filters.equal("countryCode", toBson(country.code)),
       Filters.equal("vatRate", toBson(vatRate)),
-      Filters.equal("situatedOn", toBson(situatedOn))
+      Filters.equal("situatedOn", toBson(situatedOn)),
+      Filters.equal("dateFrom", toBson(dateFrom)),
+      Filters.equal("dateTo", toBson(dateTo)),
     )
 
-  def get(country: Country, fromDate: LocalDate): Future[Seq[EuVatRate]] = {
+  def get(country: Country, fromDate: LocalDate, toDate: LocalDate): Future[Seq[EuVatRate]] = {
     collection.find(
-        Filters.and(
-          Filters.equal("countryCode", toBson(country.code)),
-          Filters.gte("situatedOn", toBson(fromDate))
+        Filters.or(
+          Filters.and(
+            Filters.equal("countryCode", toBson(country.code)),
+            Filters.lte("dateFrom", toBson(fromDate)),
+            Filters.gte("dateTo", toBson(fromDate))
+          ),
+          Filters.and(
+            Filters.equal("countryCode", toBson(country.code)),
+            Filters.lte("dateFrom", toBson(toDate)),
+            Filters.gte("dateTo", toBson(toDate))
+          )
+
         )
       )
       .toFuture()
@@ -81,7 +98,7 @@ class EuVatRateRepository @Inject()(
   def set(euVatRate: EuVatRate): Future[EuVatRate] = {
     collection
       .replaceOne(
-        filter = byUniqueEntry(euVatRate.country, euVatRate.vatRate, euVatRate.situatedOn),
+        filter = byUniqueEntry(euVatRate.country, euVatRate.vatRate, euVatRate.situatedOn, euVatRate.dateFrom, euVatRate.dateTo),
         replacement = euVatRate,
         options = ReplaceOptions().upsert(true)
       )
@@ -93,7 +110,7 @@ class EuVatRateRepository @Inject()(
     collection
       .bulkWrite(euVatRates.map { euVatRate =>
         ReplaceOneModel(
-          filter = byUniqueEntry(euVatRate.country, euVatRate.vatRate, euVatRate.situatedOn),
+          filter = byUniqueEntry(euVatRate.country, euVatRate.vatRate, euVatRate.situatedOn, euVatRate.dateFrom, euVatRate.dateTo),
           replacement = euVatRate,
           replaceOptions = ReplaceOptions().upsert(true)
         )

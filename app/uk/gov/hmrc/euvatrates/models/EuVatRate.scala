@@ -20,9 +20,17 @@ import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
-import java.time.LocalDate
+import java.time.{Instant, LocalDate}
 
-case class EuVatRate(country: Country, vatRate: BigDecimal, vatRateType: VatRateType, situatedOn: LocalDate)
+case class EuVatRate(
+                      country: Country,
+                      vatRate: BigDecimal,
+                      vatRateType: VatRateType,
+                      situatedOn: LocalDate,
+                      dateFrom: LocalDate,
+                      dateTo: LocalDate,
+                      lastUpdated: Instant
+                    )
 
 object EuVatRate {
   private val dbReads: Reads[EuVatRate] = {
@@ -30,7 +38,10 @@ object EuVatRate {
       (__ \ "countryCode").read[String].map(code => Country.getCountryFromCode(code).get) and
         (__ \ "vatRate").read[BigDecimal] and
         (__ \ "vatRateType").read[VatRateType] and
-        (__ \ "situatedOn").read(MongoJavatimeFormats.localDateFormat)
+        (__ \ "situatedOn").read(MongoJavatimeFormats.localDateFormat) and
+        (__ \ "dateFrom").read(MongoJavatimeFormats.localDateFormat) and
+        (__ \ "dateTo").read(MongoJavatimeFormats.localDateFormat) and
+        (__ \ "lastUpdated").read(MongoJavatimeFormats.instantFormat)
       ) (EuVatRate.apply _)
   }
   private val dbWrites: OWrites[EuVatRate] = {
@@ -41,7 +52,10 @@ object EuVatRate {
       (__ \ "countryCode").write[String].contramap[Country](_.code) and
         (__ \ "vatRate").write[BigDecimal] and
         (__ \ "vatRateType").write[VatRateType] and
-        (__ \ "situatedOn").write(MongoJavatimeFormats.localDateFormat)
+        (__ \ "situatedOn").write(MongoJavatimeFormats.localDateFormat) and
+        (__ \ "dateFrom").write(MongoJavatimeFormats.localDateFormat) and
+        (__ \ "dateTo").write(MongoJavatimeFormats.localDateFormat) and
+        (__ \ "lastUpdated").write(MongoJavatimeFormats.instantFormat)
       ) (unlift(EuVatRate.unapply))
   }
 

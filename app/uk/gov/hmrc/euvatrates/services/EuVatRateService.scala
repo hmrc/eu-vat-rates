@@ -23,14 +23,15 @@ import uk.gov.hmrc.euvatrates.models.{Country, EuVatRate, VatRateType}
 import uk.gov.hmrc.euvatrates.repositories.EuVatRateRepository
 import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
 
-import java.time.LocalDate
+import java.time.{Clock, Instant, LocalDate}
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.xml.{Node, XML}
 
 class EuVatRateService @Inject()(
                                   euVatRateRepository: EuVatRateRepository,
-                                  eCSoapConnector: ECSoapConnector
+                                  eCSoapConnector: ECSoapConnector,
+                                  clock: Clock
                                 )(implicit ec: ExecutionContext) extends Logging {
 
 
@@ -57,7 +58,7 @@ class EuVatRateService @Inject()(
     eCSoapConnector.getVatRates(messageBody.toString()).flatMap { response =>
       response.status match {
         case OK =>
-          val parsedResponse = parseResponse(response.body).sortBy(-_.vatRate)
+          val parsedResponse = parseResponse(response.body, dateFrom, dateTo).sortBy(-_.vatRate)
           cacheResponse(parsedResponse)
           parsedResponse.toFuture
         case status =>
@@ -75,21 +76,21 @@ class EuVatRateService @Inject()(
 
   private def retrieveFromCache(countries: Seq[Country], dateFrom: LocalDate, dateTo: LocalDate) = {
     Future.sequence(countries.map { country =>
-      euVatRateRepository.get(country, dateFrom)
+      euVatRateRepository.get(country, dateFrom, dateTo)
     }).map(_.flatten)
   }
 
-  private def parseResponse(response: String): Seq[EuVatRate] = {
+  private def parseResponse(response: String, dateFrom: LocalDate, dateTo: LocalDate): Seq[EuVatRate] = {
     val xml = XML.loadString(response)
 
     (xml \\ "Envelope" \\ "Body" \\ "retrieveVatRatesRespMsg" \\ "vatRateResults").map { vatRateResult =>
-      parseSingleEuVatRate(vatRateResult)
+      parseSingleEuVatRate(vatRateResult, dateFrom, dateTo)
     }.groupBy(_.country).flatMap {
       case (_, vatRates) => vatRates.distinctBy(_.vatRate)
     }.toSeq
   }
 
-  private def parseSingleEuVatRate(elem: Node): EuVatRate = {
+  private def parseSingleEuVatRate(elem: Node, dateFrom: LocalDate, dateTo: LocalDate): EuVatRate = {
     val memberStateElem = elem \ "memberState"
     val rateElem = elem \ "rate" \ "value"
     val vatRateTypeElem = elem \ "type"
@@ -99,7 +100,10 @@ class EuVatRateService @Inject()(
       country = Country.getCountryFromCode(memberStateElem.text).getOrElse(throw new Exception(s"Unknown Country code ${memberStateElem.text}")),
       vatRate = BigDecimal(rateElem.text),
       vatRateType = VatRateType.enumerable.withName(vatRateTypeElem.text).getOrElse(throw new Exception(s"Unknown vat rate type ${vatRateTypeElem.text}")),
-      situatedOn = LocalDate.parse(situatedOnElem.text.split("\\+").head)
+      situatedOn = LocalDate.parse(situatedOnElem.text.split("\\+").head),
+      dateFrom = dateFrom,
+      dateTo = dateTo,
+      lastUpdated = Instant.now(clock)
     )
   }
 

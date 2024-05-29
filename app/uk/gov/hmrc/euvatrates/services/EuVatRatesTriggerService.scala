@@ -25,11 +25,10 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class EuVatRatesTriggerService @Inject()(
-                                              euVatRateService: EuVatRateService,
-                                              euVatRateRepository: EuVatRateRepository,
-                                              clock: Clock
-                                   ) (implicit ec: ExecutionContext) extends Logging {
-
+                                          euVatRateService: EuVatRateService,
+                                          euVatRateRepository: EuVatRateRepository,
+                                          clock: Clock
+                                        )(implicit ec: ExecutionContext) extends Logging {
 
 
   def triggerFeedUpdate: Future[Seq[EuVatRate]] = {
@@ -41,18 +40,36 @@ class EuVatRatesTriggerService @Inject()(
   }
 
   private def getRatesAndSave(countries: Seq[Country]): Future[Seq[EuVatRate]] = {
-    val defaultStartDate = LocalDate.of(2021, 1, 1)
-    val defaultEndDate = LocalDate.now(clock)
+    val now = LocalDate.now(clock)
 
-    euVatRateService.getAllVatRates(countries, defaultStartDate, defaultEndDate).map(vatRates => vatRates.sortBy(_.situatedOn.toEpochDay))
-      .flatMap(feeds =>
-        if (feeds.nonEmpty) {
-          euVatRateRepository.setMany(feeds)
-        } else {
-          logger.warn("No rates were retrieved from EC")
-          Future.successful(Seq.empty)
-        }
-      )
+    val defaultStartDate = now.minusYears(3).minusMonths(1)
+    val defaultEndDate = now
+
+    val allMonthsToSearch = allMonthsBetweenDates(defaultStartDate, defaultEndDate)
+
+    val allMonthsSearchedAndSaved = allMonthsToSearch.map { monthToSearch =>
+      val dateFrom = monthToSearch.withDayOfMonth(1)
+      val dateTo = dateFrom.plusMonths(1).minusDays(1)
+      euVatRateService.getAllVatRates(countries, dateFrom, dateTo).map(vatRates => vatRates.sortBy(_.situatedOn.toEpochDay))
+        .flatMap(feeds =>
+          if (feeds.nonEmpty) {
+            euVatRateRepository.setMany(feeds)
+          } else {
+            logger.warn("No rates were retrieved from EC")
+            Future.successful(Seq.empty)
+          }
+        )
+    }
+
+    Future.sequence(allMonthsSearchedAndSaved).map(_.flatten)
+  }
+
+  private def allMonthsBetweenDates(currentMonth: LocalDate, endDate: LocalDate): List[LocalDate] = {
+    if (currentMonth.withDayOfMonth(1).isEqual(endDate.withDayOfMonth(1))) {
+      List(currentMonth) ++ allMonthsBetweenDates(currentMonth.plusMonths(1), endDate)
+    } else {
+      List(currentMonth)
+    }
   }
 
 }
