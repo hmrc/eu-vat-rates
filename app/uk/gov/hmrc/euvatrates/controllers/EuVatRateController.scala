@@ -20,6 +20,7 @@ import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents}
 import uk.gov.hmrc.euvatrates.logging.Logging
 import uk.gov.hmrc.euvatrates.models.Country
+import uk.gov.hmrc.euvatrates.repositories.EuVatRateRepository
 import uk.gov.hmrc.euvatrates.services.EuVatRateService
 import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
@@ -33,6 +34,7 @@ import scala.util.{Failure, Success, Try}
 class EuVatRateController @Inject()(
                                      cc: ControllerComponents,
                                      euVatRateService: EuVatRateService,
+                                     euVatRateRepository: EuVatRateRepository,
                                      clock: Clock
                                    )(implicit ec: ExecutionContext) extends BackendController(cc) with Logging {
 
@@ -61,16 +63,26 @@ class EuVatRateController @Inject()(
                 BadRequest("Date from cannot be after date to").toFuture
               } else {
 
-                euVatRateService.getAllVatRates(
+                euVatRateRepository.getMany(
                   countries = countriesPassed,
-                  dateFrom = dateFrom,
-                  dateTo = dateTo
-                ).map(resp =>
-                  Ok(Json.toJson(resp))
-                ).recover {
-                  case e: Exception =>
-                    logger.error(s"Error occurred while getting VAT rates ${e.getMessage}", e)
-                    InternalServerError(e.getMessage)
+                  fromDate = dateFrom,
+                  toDate = dateTo
+                ).map { rates =>
+                  Ok(Json.toJson(rates))
+                }.recoverWith {
+                  case e =>
+                    logger.warn(s"Unable to get the follow countries from store $countriesPassed with dates from $dateFrom and to $dateTo because of ${e.getMessage}", e)
+                    euVatRateService.getAllVatRates(
+                      countries = countriesPassed,
+                      dateFrom = dateFrom,
+                      dateTo = dateTo
+                    ).map(resp =>
+                      Ok(Json.toJson(resp))
+                    ).recover {
+                      case e: Exception =>
+                        logger.error(s"Error occurred while getting VAT rates ${e.getMessage}", e)
+                        InternalServerError(e.getMessage)
+                    }
                 }
               }
             }

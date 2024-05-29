@@ -108,5 +108,34 @@ class EuVatRateRepositorySpec
     }
 
   }
+
+  ".getMany" - {
+
+    "must return saved record when one exists for this user id" in {
+
+      val euVatRate3 = euVatRate.copy(country = country2)
+
+      repository.set(euVatRate).futureValue
+      repository.set(euVatRate3).futureValue
+
+      val result = repository.getMany(Seq(country, country2), fromDate, toDate).futureValue
+
+      result mustEqual Seq(euVatRate, euVatRate3)
+    }
+
+
+    "doesn't return dates outside of dateFrom/to" in {
+
+      val euVatRate3 = euVatRate.copy(country = country2)
+
+      repository.set(euVatRate).futureValue
+      repository.set(euVatRate3).futureValue
+
+      val result = repository.getMany(Seq(country, country2), fromDate.plusYears(11), toDate.plusYears(11)).futureValue
+
+      result mustEqual Seq.empty
+    }
+
+  }
 }
 

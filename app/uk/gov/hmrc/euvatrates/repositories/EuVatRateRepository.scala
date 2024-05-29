@@ -44,7 +44,7 @@ class EuVatRateRepository @Inject()(
     extraCodecs = Seq(BigDecimalCodec),
     indexes = Seq(
       IndexModel(
-        Indexes.ascending("countryCode", "vatRate", "situatedOn"),
+        Indexes.ascending("countryCode", "vatRate", "dateFrom", "dateTo"),
         IndexOptions()
           .name("euVatRateReferenceIdx")
           .unique(true)
@@ -86,6 +86,26 @@ class EuVatRateRepository @Inject()(
           ),
           Filters.and(
             Filters.equal("countryCode", toBson(country.code)),
+            Filters.lte("dateFrom", toBson(toDate)),
+            Filters.gte("dateTo", toBson(toDate))
+          )
+
+        )
+      )
+      .toFuture()
+  }
+
+  def getMany(countries: Seq[Country], fromDate: LocalDate, toDate: LocalDate): Future[Seq[EuVatRate]] = {
+    val countryCodes = countries.map(country => toBson(country.code))
+    collection.find(
+        Filters.or(
+          Filters.and(
+            Filters.in("countryCode", countryCodes: _*),
+            Filters.lte("dateFrom", toBson(fromDate)),
+            Filters.gte("dateTo", toBson(fromDate))
+          ),
+          Filters.and(
+            Filters.in("countryCode", countryCodes: _*),
             Filters.lte("dateFrom", toBson(toDate)),
             Filters.gte("dateTo", toBson(toDate))
           )
