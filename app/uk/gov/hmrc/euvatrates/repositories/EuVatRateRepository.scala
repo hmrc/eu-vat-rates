@@ -95,26 +95,6 @@ class EuVatRateRepository @Inject()(
       .toFuture()
   }
 
-  def getMany(countries: Seq[Country], fromDate: LocalDate, toDate: LocalDate): Future[Seq[EuVatRate]] = {
-    val countryCodes = countries.map(country => toBson(country.code))
-    collection.find(
-        Filters.or(
-          Filters.and(
-            Filters.in("countryCode", countryCodes: _*),
-            Filters.lte("dateFrom", toBson(fromDate)),
-            Filters.gte("dateTo", toBson(fromDate))
-          ),
-          Filters.and(
-            Filters.in("countryCode", countryCodes: _*),
-            Filters.lte("dateFrom", toBson(toDate)),
-            Filters.gte("dateTo", toBson(toDate))
-          )
-
-        )
-      )
-      .toFuture()
-  }
-
   def set(euVatRate: EuVatRate): Future[EuVatRate] = {
     collection
       .replaceOne(
