@@ -45,7 +45,7 @@ class ECSoapConnector @Inject()(
       CONTENT_TYPE -> "text/xml"
     )
 
-    logger.info(s"Posting with url $url and env $soapEnvelope with headers $headers")
+    logger.debug(s"Posting with url $url and env $soapEnvelope with headers $headers")
 
     httpClient
       .post(url)
