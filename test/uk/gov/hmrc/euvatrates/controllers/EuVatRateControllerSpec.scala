@@ -49,9 +49,10 @@ class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
   "GET /" - {
     "return 200" - {
       "when cache responds successfully" - {
-        "with empty data" in {
+        "with empty data it does the fallback call" in {
 
           when(mockEuVatRateRepository.getMany(any(), any(), any())) thenReturn Seq.empty.toFuture
+          when(mockEuVatRateService.getAllVatRates(any(), any(), any())) thenReturn Seq.empty.toFuture
 
           val app =
             applicationBuilder()
