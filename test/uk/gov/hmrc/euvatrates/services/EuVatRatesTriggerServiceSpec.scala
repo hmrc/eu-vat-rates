@@ -21,10 +21,11 @@ import org.mockito.Mockito
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
 import uk.gov.hmrc.euvatrates.base.SpecBase
+import uk.gov.hmrc.euvatrates.models.Country
 import uk.gov.hmrc.euvatrates.repositories.EuVatRateRepository
 import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
 
-import java.time.{Clock, Instant, ZoneId}
+import java.time.{Clock, Instant, LocalDate, ZoneId}
 import java.time.temporal.ChronoUnit
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -50,9 +51,38 @@ class EuVatRatesTriggerServiceSpec extends SpecBase with BeforeAndAfterEach {
 
       val service = new EuVatRatesTriggerService(mockEuVatRateService, mockEuVatRateRepository, stubClock)
 
-      service.triggerFeedUpdate.futureValue mustBe Seq(euVatRate1, euVatRate2)
+      val allExpectedDatesToSearch = {
+        val now = LocalDate.now(stubClockAtArbitraryDate)
+
+        val defaultStartDate = now.minusYears(3).minusMonths(1)
+        val defaultEndDate = now
+
+        allMonthsBetweenDates(defaultStartDate, defaultEndDate)
+      }
+
+      val allExpectedVatRates = allExpectedDatesToSearch.flatMap { _ =>
+
+        Seq(
+          euVatRate1,
+          euVatRate2
+        )
+      }
+
+      val result = service.triggerFeedUpdate.futureValue
+
+      result.size mustBe allExpectedDatesToSearch.size * 2
+
+      service.triggerFeedUpdate.futureValue must contain theSameElementsAs allExpectedVatRates
     }
 
+  }
+
+  private def allMonthsBetweenDates(currentMonth: LocalDate, endDate: LocalDate): List[LocalDate] = {
+    if (currentMonth.withDayOfMonth(1).isEqual(endDate.withDayOfMonth(1))) {
+      List(currentMonth)
+    } else {
+      List(currentMonth) ++ allMonthsBetweenDates(currentMonth.plusMonths(1), endDate)
+    }
   }
 
 }

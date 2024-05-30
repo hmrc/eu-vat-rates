@@ -36,7 +36,10 @@ class EuVatRatesTriggerService @Inject()(
 
     logger.info(s"Triggered a feed update for country codes: ${allCountries.map(_.code)}")
 
-    getRatesAndSave(allCountries)
+    getRatesAndSave(allCountries).map { rates =>
+      logger.info(s"EU VAT Rates update ran successfully. Stored ${rates.size} vat rates")
+      rates
+    }
   }
 
   private def getRatesAndSave(countries: Seq[Country]): Future[Seq[EuVatRate]] = {
@@ -51,14 +54,14 @@ class EuVatRatesTriggerService @Inject()(
       val dateFrom = monthToSearch.withDayOfMonth(1)
       val dateTo = dateFrom.plusMonths(1).minusDays(1)
       euVatRateService.getAllVatRates(countries, dateFrom, dateTo).map(vatRates => vatRates.sortBy(_.situatedOn.toEpochDay))
-        .flatMap(feeds =>
+        .flatMap { feeds =>
           if (feeds.nonEmpty) {
             euVatRateRepository.setMany(feeds)
           } else {
-            logger.warn("No rates were retrieved from EC")
+            logger.warn(s"No rates were retrieved from EC for $countries $dateFrom $dateTo")
             Future.successful(Seq.empty)
           }
-        )
+        }
     }
 
     Future.sequence(allMonthsSearchedAndSaved).map(_.flatten)
@@ -66,9 +69,9 @@ class EuVatRatesTriggerService @Inject()(
 
   private def allMonthsBetweenDates(currentMonth: LocalDate, endDate: LocalDate): List[LocalDate] = {
     if (currentMonth.withDayOfMonth(1).isEqual(endDate.withDayOfMonth(1))) {
-      List(currentMonth) ++ allMonthsBetweenDates(currentMonth.plusMonths(1), endDate)
-    } else {
       List(currentMonth)
+    } else {
+      List(currentMonth) ++ allMonthsBetweenDates(currentMonth.plusMonths(1), endDate)
     }
   }
 
