@@ -17,22 +17,24 @@
 package uk.gov.hmrc.euvatrates.controllers
 
 import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, ControllerComponents}
+import play.api.mvc.{Action, AnyContent, ControllerComponents, Result}
 import uk.gov.hmrc.euvatrates.logging.Logging
 import uk.gov.hmrc.euvatrates.models.Country
+import uk.gov.hmrc.euvatrates.repositories.EuVatRateRepository
 import uk.gov.hmrc.euvatrates.services.EuVatRateService
 import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendController
 
 import java.time.{Clock, LocalDate}
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
 @Singleton()
 class EuVatRateController @Inject()(
                                      cc: ControllerComponents,
                                      euVatRateService: EuVatRateService,
+                                     euVatRateRepository: EuVatRateRepository,
                                      clock: Clock
                                    )(implicit ec: ExecutionContext) extends BackendController(cc) with Logging {
 
@@ -61,16 +63,20 @@ class EuVatRateController @Inject()(
                 BadRequest("Date from cannot be after date to").toFuture
               } else {
 
-                euVatRateService.getAllVatRates(
+                euVatRateRepository.getMany(
                   countries = countriesPassed,
-                  dateFrom = dateFrom,
-                  dateTo = dateTo
-                ).map(resp =>
-                  Ok(Json.toJson(resp))
-                ).recover {
-                  case e: Exception =>
-                    logger.error(s"Error occurred while getting VAT rates ${e.getMessage}", e)
-                    InternalServerError(e.getMessage)
+                  fromDate = dateFrom,
+                  toDate = dateTo
+                ).flatMap {
+                  case Nil =>
+                    logger.warn(s"Did not find any rates in store for the following countries: $countriesPassed with dates from $dateFrom and to $dateTo")
+                    fallbackCall(countriesPassed, dateFrom, dateTo)
+                  case rates =>
+                    Ok(Json.toJson(rates)).toFuture
+                }.recoverWith {
+                  case e =>
+                    logger.warn(s"Unable to get the following countries from store $countriesPassed with dates from $dateFrom and to $dateTo because of ${e.getMessage}", e)
+                    fallbackCall(countriesPassed, dateFrom, dateTo)
                 }
               }
             }
@@ -80,6 +86,21 @@ class EuVatRateController @Inject()(
       }
       case Failure(e) =>
         BadRequest(s"dateFrom was not processable ${e.getMessage}").toFuture
+    }
+  }
+
+  private def fallbackCall(countriesPassed: Seq[Country], dateFrom: LocalDate, dateTo: LocalDate): Future[Result] = {
+
+    euVatRateService.getAllVatRates(
+      countries = countriesPassed,
+      dateFrom = dateFrom,
+      dateTo = dateTo
+    ).map(resp =>
+      Ok(Json.toJson(resp))
+    ).recover {
+      case e: Exception =>
+        logger.error(s"Error occurred while getting VAT rates ${e.getMessage}", e)
+        InternalServerError(e.getMessage)
     }
   }
 }
