@@ -36,9 +36,10 @@ class EuVatRatesWorker @Inject()(
   private val scheduler = actorSystem.scheduler
 
   private val interval = configuration.get[FiniteDuration]("schedules.eu-vat-rates-worker.interval")
+  private val initialDelay = configuration.get[FiniteDuration]("schedules.eu-vat-rates-worker.initialDelay")
 
   private val cancel = scheduler.scheduleWithFixedDelay(
-    initialDelay = 0.seconds,
+    initialDelay = initialDelay,
     delay = interval
   ) { () =>
     euVatRatesTriggerService.triggerFeedUpdate.recover {

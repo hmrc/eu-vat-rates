@@ -16,9 +16,11 @@
 
 package uk.gov.hmrc.euvatrates.services
 
+import uk.gov.hmrc.euvatrates.config.AppConfig
 import uk.gov.hmrc.euvatrates.logging.Logging
 import uk.gov.hmrc.euvatrates.models.{Country, EuVatRate}
 import uk.gov.hmrc.euvatrates.repositories.EuVatRateRepository
+import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
 
 import java.time.{Clock, LocalDate}
 import javax.inject.Inject
@@ -27,18 +29,26 @@ import scala.concurrent.{ExecutionContext, Future}
 class EuVatRatesTriggerService @Inject()(
                                           euVatRateService: EuVatRateService,
                                           euVatRateRepository: EuVatRateRepository,
+                                          appConfig: AppConfig,
                                           clock: Clock
                                         )(implicit ec: ExecutionContext) extends Logging {
 
 
   def triggerFeedUpdate: Future[Seq[EuVatRate]] = {
-    val allCountries = Country.euCountriesWithNI
 
-    logger.info(s"Triggered a feed update for country codes: ${allCountries.map(_.code)}")
+    if(appConfig.schedulerEnabled) {
 
-    getRatesAndSave(allCountries).map { rates =>
-      logger.info(s"EU VAT Rates update ran successfully. Stored ${rates.size} vat rates")
-      rates
+      val allCountries = Country.euCountriesWithNI
+
+      logger.info(s"Triggered a feed update for country codes: ${allCountries.map(_.code)}")
+
+      getRatesAndSave(allCountries).map { rates =>
+        logger.info(s"EU VAT Rates update ran successfully. Stored ${rates.size} vat rates")
+        rates
+      }
+    } else {
+      logger.info("EU VAT rates Scheduler is disabled")
+      Seq.empty.toFuture
     }
   }
 

@@ -21,6 +21,7 @@ import org.mockito.Mockito
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
 import uk.gov.hmrc.euvatrates.base.SpecBase
+import uk.gov.hmrc.euvatrates.config.AppConfig
 import uk.gov.hmrc.euvatrates.models.Country
 import uk.gov.hmrc.euvatrates.repositories.EuVatRateRepository
 import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
@@ -33,46 +34,64 @@ class EuVatRatesTriggerServiceSpec extends SpecBase with BeforeAndAfterEach {
 
   private val mockEuVatRateService = mock[EuVatRateService]
   private val mockEuVatRateRepository = mock[EuVatRateRepository]
+  private val mockAppConfig = mock[AppConfig]
 
   private val instant: Instant = Instant.now().truncatedTo(ChronoUnit.MILLIS)
   private val stubClock: Clock = Clock.fixed(instant, ZoneId.systemDefault())
 
   override def beforeEach(): Unit = {
-    Mockito.reset(mockEuVatRateService)
-    Mockito.reset(mockEuVatRateRepository)
+    Mockito.reset(
+      mockEuVatRateService,
+      mockEuVatRateRepository,
+      mockAppConfig
+    )
   }
 
   "EUVatRatesTriggerService" - {
 
-    "#triggerFeedUpdate" in {
+    "#triggerFeedUpdate" - {
+      "return rates when scheduler is enabled" in {
 
-      when(mockEuVatRateService.getAllVatRates(any(), any(), any())) thenReturn Seq(euVatRate1, euVatRate2).toFuture
-      when(mockEuVatRateRepository.setMany(any())) thenReturn Seq(euVatRate1, euVatRate2).toFuture
+        when(mockAppConfig.schedulerEnabled) thenReturn true
+        when(mockEuVatRateService.getAllVatRates(any(), any(), any())) thenReturn Seq(euVatRate1, euVatRate2).toFuture
+        when(mockEuVatRateRepository.setMany(any())) thenReturn Seq(euVatRate1, euVatRate2).toFuture
 
-      val service = new EuVatRatesTriggerService(mockEuVatRateService, mockEuVatRateRepository, stubClock)
+        val service = new EuVatRatesTriggerService(mockEuVatRateService, mockEuVatRateRepository, mockAppConfig, stubClock)
 
-      val allExpectedDatesToSearch = {
-        val now = LocalDate.now(stubClockAtArbitraryDate)
+        val allExpectedDatesToSearch = {
+          val now = LocalDate.now(stubClockAtArbitraryDate)
 
-        val defaultStartDate = now.minusYears(3).minusMonths(1)
-        val defaultEndDate = now
+          val defaultStartDate = now.minusYears(3).minusMonths(1)
+          val defaultEndDate = now
 
-        allMonthsBetweenDates(defaultStartDate, defaultEndDate)
+          allMonthsBetweenDates(defaultStartDate, defaultEndDate)
+        }
+
+        val allExpectedVatRates = allExpectedDatesToSearch.flatMap { _ =>
+
+          Seq(
+            euVatRate1,
+            euVatRate2
+          )
+        }
+
+        val result = service.triggerFeedUpdate.futureValue
+
+        result.size mustBe allExpectedDatesToSearch.size * 2
+
+        service.triggerFeedUpdate.futureValue must contain theSameElementsAs allExpectedVatRates
       }
 
-      val allExpectedVatRates = allExpectedDatesToSearch.flatMap { _ =>
+      "return empty when scheduler is disabled" in {
 
-        Seq(
-          euVatRate1,
-          euVatRate2
-        )
+        when(mockAppConfig.schedulerEnabled) thenReturn false
+
+        val service = new EuVatRatesTriggerService(mockEuVatRateService, mockEuVatRateRepository, mockAppConfig, stubClock)
+
+        val result = service.triggerFeedUpdate.futureValue
+
+        result.size mustBe 0
       }
-
-      val result = service.triggerFeedUpdate.futureValue
-
-      result.size mustBe allExpectedDatesToSearch.size * 2
-
-      service.triggerFeedUpdate.futureValue must contain theSameElementsAs allExpectedVatRates
     }
 
   }
