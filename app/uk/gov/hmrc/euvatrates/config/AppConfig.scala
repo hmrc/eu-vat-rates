@@ -24,7 +24,7 @@ class AppConfig @Inject()(config: Configuration) {
 
   val appName: String = config.get[String]("appName")
 
-  val proxyRequiredForThisEnvironment: Boolean = config.getOptional[Boolean]("proxy.proxyRequiredForThisEnvironment").getOrElse(false)
-
   val cacheTtl: Int = config.get[Int]("mongodb.timeToLiveInDays")
+
+  val schedulerEnabled: Boolean = config.get[Boolean]("schedules.eu-vat-rates-worker.enabled")
 }
