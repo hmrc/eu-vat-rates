@@ -44,7 +44,7 @@ class EuVatRateRepository @Inject()(
     extraCodecs = Seq(BigDecimalCodec),
     indexes = Seq(
       IndexModel(
-        Indexes.ascending("countryCode", "vatRate", "dateFrom", "dateTo"),
+        Indexes.ascending("countryCode", "vatRate", "situatedOn", "dateFrom", "dateTo"),
         IndexOptions()
           .name("euVatRateReferenceIdx")
           .unique(true)
