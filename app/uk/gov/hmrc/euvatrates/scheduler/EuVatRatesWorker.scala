@@ -21,6 +21,7 @@ import play.api.{Configuration, Logging}
 import play.api.inject.ApplicationLifecycle
 import uk.gov.hmrc.euvatrates.services.EuVatRatesTriggerService
 
+import java.time.{Clock, LocalDate}
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
@@ -30,7 +31,8 @@ class EuVatRatesWorker @Inject()(
                                   configuration: Configuration,
                                   euVatRatesTriggerService: EuVatRatesTriggerService,
                                   lifecycle: ApplicationLifecycle,
-                                  actorSystem: ActorSystem
+                                  actorSystem: ActorSystem,
+                                  clock: Clock
                                 )(implicit ec: ExecutionContext) extends Logging {
 
   private val scheduler = actorSystem.scheduler
@@ -38,15 +40,37 @@ class EuVatRatesWorker @Inject()(
   private val interval = configuration.get[FiniteDuration]("schedules.eu-vat-rates-worker.interval")
   private val initialDelay = configuration.get[FiniteDuration]("schedules.eu-vat-rates-worker.initialDelay")
 
-  private val cancel = scheduler.scheduleWithFixedDelay(
-    initialDelay = initialDelay,
-    delay = interval
-  ) { () =>
-    euVatRatesTriggerService.triggerFeedUpdate.recover {
-      case e => logger.error("Error when updating EU Vat rates", e)
+  private def cancel(dates: Seq[LocalDate]) = {
+    dates.zipWithIndex.map { case (date, index) =>
+      scheduler.scheduleWithFixedDelay(
+        initialDelay = initialDelay * index,
+        delay = interval
+      ) { () =>
+        euVatRatesTriggerService.triggerFeedUpdate(date).recover {
+          case e => logger.error("Error when updating EU Vat rates", e)
+        }
+      }
     }
   }
 
-  lifecycle.addStopHook(() => Future.successful(cancel.cancel()))
+  private def allMonthsBetweenDates(currentMonth: LocalDate, endDate: LocalDate): List[LocalDate] = {
+    if (currentMonth.withDayOfMonth(1).isEqual(endDate.withDayOfMonth(1))) {
+      List(currentMonth)
+    } else {
+      List(currentMonth) ++ allMonthsBetweenDates(currentMonth.plusMonths(1), endDate)
+    }
+  }
+
+  lifecycle.addStopHook { () =>
+
+    val now = LocalDate.now(clock)
+
+    val defaultStartDate = now.minusYears(3).minusMonths(1)
+    val defaultEndDate = now
+
+    val allMonthsToSearch = allMonthsBetweenDates(defaultStartDate, defaultEndDate)
+
+    Future.successful(cancel(allMonthsToSearch).map(_.cancel()))
+  }
 }
 

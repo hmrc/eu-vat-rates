@@ -56,39 +56,31 @@ class EuVatRatesTriggerServiceSpec extends SpecBase with BeforeAndAfterEach {
         when(mockEuVatRateService.getAllVatRates(any(), any(), any())) thenReturn Seq(euVatRate1, euVatRate2).toFuture
         when(mockEuVatRateRepository.setMany(any())) thenReturn Seq(euVatRate1, euVatRate2).toFuture
 
-        val service = new EuVatRatesTriggerService(mockEuVatRateService, mockEuVatRateRepository, mockAppConfig, stubClock)
+        val service = new EuVatRatesTriggerService(mockEuVatRateService, mockEuVatRateRepository, mockAppConfig)
 
-        val allExpectedDatesToSearch = {
-          val now = LocalDate.now(stubClockAtArbitraryDate)
+        val now = LocalDate.now(stubClockAtArbitraryDate)
 
-          val defaultStartDate = now.minusYears(3).minusMonths(1)
-          val defaultEndDate = now
+        val expectedRates = Seq(
+          euVatRate1,
+          euVatRate2
+        )
 
-          allMonthsBetweenDates(defaultStartDate, defaultEndDate)
-        }
+        val result = service.triggerFeedUpdate(now).futureValue
 
-        val allExpectedVatRates = allExpectedDatesToSearch.flatMap { _ =>
+        result.size mustBe expectedRates.size
 
-          Seq(
-            euVatRate1,
-            euVatRate2
-          )
-        }
-
-        val result = service.triggerFeedUpdate.futureValue
-
-        result.size mustBe allExpectedDatesToSearch.size * 2
-
-        service.triggerFeedUpdate.futureValue must contain theSameElementsAs allExpectedVatRates
+        result must contain theSameElementsAs expectedRates
       }
 
       "return empty when scheduler is disabled" in {
 
         when(mockAppConfig.schedulerEnabled) thenReturn false
 
-        val service = new EuVatRatesTriggerService(mockEuVatRateService, mockEuVatRateRepository, mockAppConfig, stubClock)
+        val service = new EuVatRatesTriggerService(mockEuVatRateService, mockEuVatRateRepository, mockAppConfig)
 
-        val result = service.triggerFeedUpdate.futureValue
+        val now = LocalDate.now(stubClockAtArbitraryDate)
+
+        val result = service.triggerFeedUpdate(now).futureValue
 
         result.size mustBe 0
       }

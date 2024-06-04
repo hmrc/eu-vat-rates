@@ -22,27 +22,26 @@ import uk.gov.hmrc.euvatrates.models.{Country, EuVatRate}
 import uk.gov.hmrc.euvatrates.repositories.EuVatRateRepository
 import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
 
-import java.time.{Clock, LocalDate}
+import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class EuVatRatesTriggerService @Inject()(
                                           euVatRateService: EuVatRateService,
                                           euVatRateRepository: EuVatRateRepository,
-                                          appConfig: AppConfig,
-                                          clock: Clock
+                                          appConfig: AppConfig
                                         )(implicit ec: ExecutionContext) extends Logging {
 
 
-  def triggerFeedUpdate: Future[Seq[EuVatRate]] = {
+  def triggerFeedUpdate(monthToSearch: LocalDate): Future[Seq[EuVatRate]] = {
 
-    if(appConfig.schedulerEnabled) {
+    if (appConfig.schedulerEnabled) {
 
       val allCountries = Country.euCountriesWithNI
 
       logger.info(s"Triggered a feed update for country codes: ${allCountries.map(_.code)}")
 
-      getRatesAndSave(allCountries).map { rates =>
+      getRatesAndSave(allCountries, monthToSearch).map { rates =>
         logger.info(s"EU VAT Rates update ran successfully. Stored ${rates.size} vat rates")
         rates
       }
@@ -52,37 +51,21 @@ class EuVatRatesTriggerService @Inject()(
     }
   }
 
-  private def getRatesAndSave(countries: Seq[Country]): Future[Seq[EuVatRate]] = {
-    val now = LocalDate.now(clock)
+  private def getRatesAndSave(countries: Seq[Country], monthToSearch: LocalDate): Future[Seq[EuVatRate]] = {
 
-    val defaultStartDate = now.minusYears(3).minusMonths(1)
-    val defaultEndDate = now
+    val dateFrom = monthToSearch.withDayOfMonth(1)
+    val dateTo = dateFrom.plusMonths(1).minusDays(1)
 
-    val allMonthsToSearch = allMonthsBetweenDates(defaultStartDate, defaultEndDate)
-
-    val allMonthsSearchedAndSaved = allMonthsToSearch.map { monthToSearch =>
-      val dateFrom = monthToSearch.withDayOfMonth(1)
-      val dateTo = dateFrom.plusMonths(1).minusDays(1)
-      euVatRateService.getAllVatRates(countries, dateFrom, dateTo).map(vatRates => vatRates.sortBy(_.situatedOn.toEpochDay))
-        .flatMap { feeds =>
-          if (feeds.nonEmpty) {
-            euVatRateRepository.setMany(feeds)
-          } else {
-            logger.warn(s"No rates were retrieved from EC for $countries $dateFrom $dateTo")
-            Future.successful(Seq.empty)
-          }
+    euVatRateService.getAllVatRates(countries, dateFrom, dateTo).map(vatRates => vatRates.sortBy(_.situatedOn.toEpochDay))
+      .flatMap { feeds =>
+        if (feeds.nonEmpty) {
+          euVatRateRepository.setMany(feeds)
+        } else {
+          logger.warn(s"No rates were retrieved from EC for $countries $dateFrom $dateTo")
+          Future.successful(Seq.empty)
         }
-    }
+      }
 
-    Future.sequence(allMonthsSearchedAndSaved).map(_.flatten)
-  }
-
-  private def allMonthsBetweenDates(currentMonth: LocalDate, endDate: LocalDate): List[LocalDate] = {
-    if (currentMonth.withDayOfMonth(1).isEqual(endDate.withDayOfMonth(1))) {
-      List(currentMonth)
-    } else {
-      List(currentMonth) ++ allMonthsBetweenDates(currentMonth.plusMonths(1), endDate)
-    }
   }
 
 }
