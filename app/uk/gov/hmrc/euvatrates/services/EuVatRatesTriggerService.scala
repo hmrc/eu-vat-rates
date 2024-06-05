@@ -42,7 +42,7 @@ class EuVatRatesTriggerService @Inject()(
       logger.info(s"Triggered a feed update for country codes: ${allCountries.map(_.code)}")
 
       getRatesAndSave(allCountries, monthToSearch).map { rates =>
-        logger.info(s"EU VAT Rates update ran successfully. Stored ${rates.size} vat rates")
+        logger.info(s"EU VAT Rates update ran successfully. Stored ${rates.size} vat rates for month $monthToSearch")
         rates
       }
     } else {
