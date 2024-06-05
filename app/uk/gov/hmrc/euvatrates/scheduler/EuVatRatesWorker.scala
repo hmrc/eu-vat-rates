@@ -16,10 +16,12 @@
 
 package uk.gov.hmrc.euvatrates.scheduler
 
+import org.apache.http.concurrent.Cancellable
 import org.apache.pekko.actor.ActorSystem
 import play.api.{Configuration, Logging}
 import play.api.inject.ApplicationLifecycle
 import uk.gov.hmrc.euvatrates.services.EuVatRatesTriggerService
+import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
 
 import java.time.{Clock, LocalDate}
 import javax.inject.{Inject, Singleton}
@@ -40,8 +42,15 @@ class EuVatRatesWorker @Inject()(
   private val interval = configuration.get[FiniteDuration]("schedules.eu-vat-rates-worker.interval")
   private val initialDelay = configuration.get[FiniteDuration]("schedules.eu-vat-rates-worker.initialDelay")
 
-  private def cancel(dates: Seq[LocalDate]) = {
-    dates.zipWithIndex.map { case (date, index) =>
+  private val cancel = {
+    val now = LocalDate.now(clock)
+
+    val defaultStartDate = now.minusYears(3).minusMonths(1)
+    val defaultEndDate = now
+
+    val allMonthsToSearch = allMonthsBetweenDates(defaultStartDate, defaultEndDate)
+
+    allMonthsToSearch.zipWithIndex.map { case (date, index) =>
       scheduler.scheduleWithFixedDelay(
         initialDelay = initialDelay * index,
         delay = interval
@@ -63,14 +72,9 @@ class EuVatRatesWorker @Inject()(
 
   lifecycle.addStopHook { () =>
 
-    val now = LocalDate.now(clock)
-
-    val defaultStartDate = now.minusYears(3).minusMonths(1)
-    val defaultEndDate = now
-
-    val allMonthsToSearch = allMonthsBetweenDates(defaultStartDate, defaultEndDate)
-
-    Future.successful(cancel(allMonthsToSearch).map(_.cancel()))
+    Future.sequence(
+      cancel.map(cancellable => cancellable.cancel().toFuture)
+    )
   }
 }
 
