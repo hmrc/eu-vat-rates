@@ -40,6 +40,21 @@ and
 sbt run
 ```
 
+## Authentication
+
+This service use [internal-auth](https://github.com/hmrc/internal-auth) to authenticate requests using the service-to-service auth pattern.
+
+To allow your service to access eu-vat-rates, you will need to add your service name to the ```grants.yaml``` in [internal-auth-config](https://github.com/hmrc/internal-auth-config). There are separate files for this in QA and Production. It will look similar to below:
+
+```yaml
+- grantees:
+    service: [ ioss-returns-frontend, one-stop-shop-returns-frontend ]
+  permissions:
+    - resourceType: eu-vat-rates
+      resourceLocation: '*'
+      actions: [ READ ]
+```
+
 Unit and Integration Tests
 ------------
 
