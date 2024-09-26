@@ -17,7 +17,6 @@
 package uk.gov.hmrc.euvatrates.controllers.actions
 
 import play.api.mvc._
-import uk.gov.hmrc.euvatrates.controllers.actions.InternalAuthAction
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
