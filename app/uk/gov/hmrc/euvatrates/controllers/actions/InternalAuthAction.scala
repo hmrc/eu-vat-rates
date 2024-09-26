@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.euvatrates.controllers.auth
+package uk.gov.hmrc.euvatrates.controllers.actions
 
 import play.api.mvc._
 import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps

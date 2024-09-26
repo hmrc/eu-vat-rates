@@ -26,7 +26,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.euvatrates.base.SpecBase
 import uk.gov.hmrc.euvatrates.controllers.actions.FakeInternalAuthAction
-import uk.gov.hmrc.euvatrates.controllers.auth.InternalAuthAction
+import uk.gov.hmrc.euvatrates.controllers.actions.InternalAuthAction
 import uk.gov.hmrc.euvatrates.repositories.EuVatRateRepository
 import uk.gov.hmrc.euvatrates.services.EuVatRateService
 import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps

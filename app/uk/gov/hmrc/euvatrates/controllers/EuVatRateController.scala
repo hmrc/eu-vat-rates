@@ -18,7 +18,7 @@ package uk.gov.hmrc.euvatrates.controllers
 
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Result}
-import uk.gov.hmrc.euvatrates.controllers.auth.InternalAuthAction
+import uk.gov.hmrc.euvatrates.controllers.actions.InternalAuthAction
 import uk.gov.hmrc.euvatrates.logging.Logging
 import uk.gov.hmrc.euvatrates.models.Country
 import uk.gov.hmrc.euvatrates.repositories.EuVatRateRepository

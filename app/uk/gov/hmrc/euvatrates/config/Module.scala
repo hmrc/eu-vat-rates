@@ -17,7 +17,7 @@
 package uk.gov.hmrc.euvatrates.config
 
 import com.google.inject.AbstractModule
-import uk.gov.hmrc.euvatrates.controllers.auth.{AuthenticatedIdentifierAction, InternalAuthAction}
+import uk.gov.hmrc.euvatrates.controllers.actions.{AuthenticatedIdentifierAction, InternalAuthAction}
 import uk.gov.hmrc.euvatrates.scheduler.EuVatRatesWorker
 
 import java.time.{Clock, ZoneOffset}
