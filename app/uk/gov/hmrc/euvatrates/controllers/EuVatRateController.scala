@@ -18,6 +18,7 @@ package uk.gov.hmrc.euvatrates.controllers
 
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, ControllerComponents, Result}
+import uk.gov.hmrc.euvatrates.controllers.auth.InternalAuthAction
 import uk.gov.hmrc.euvatrates.logging.Logging
 import uk.gov.hmrc.euvatrates.models.Country
 import uk.gov.hmrc.euvatrates.repositories.EuVatRateRepository
@@ -35,10 +36,11 @@ class EuVatRateController @Inject()(
                                      cc: ControllerComponents,
                                      euVatRateService: EuVatRateService,
                                      euVatRateRepository: EuVatRateRepository,
-                                     clock: Clock
+                                     clock: Clock,
+                                     auth: InternalAuthAction
                                    )(implicit ec: ExecutionContext) extends BackendController(cc) with Logging {
 
-  def getVatRateForCountry(country: String, startDate: Option[String], endDate: Option[String]): Action[AnyContent] = Action.async { implicit request =>
+  def getVatRateForCountry(country: String, startDate: Option[String], endDate: Option[String]): Action[AnyContent] = auth.compose(Action).async { implicit request =>
 
     logger.info(s"Received request with start date $startDate and end date $endDate")
 

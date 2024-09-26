@@ -17,6 +17,7 @@
 package uk.gov.hmrc.euvatrates.config
 
 import com.google.inject.AbstractModule
+import uk.gov.hmrc.euvatrates.controllers.auth.{AuthenticatedIdentifierAction, InternalAuthAction}
 import uk.gov.hmrc.euvatrates.scheduler.EuVatRatesWorker
 
 import java.time.{Clock, ZoneOffset}
@@ -28,5 +29,6 @@ class Module extends AbstractModule {
     bind(classOf[AppConfig]).asEagerSingleton()
     bind(classOf[Clock]).toInstance(Clock.systemDefaultZone.withZone(ZoneOffset.UTC))
     bind(classOf[EuVatRatesWorker]).asEagerSingleton()
+    bind(classOf[InternalAuthAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
   }
 }

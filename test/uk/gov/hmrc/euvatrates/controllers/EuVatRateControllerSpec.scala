@@ -25,6 +25,8 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.euvatrates.base.SpecBase
+import uk.gov.hmrc.euvatrates.controllers.actions.FakeInternalAuthAction
+import uk.gov.hmrc.euvatrates.controllers.auth.InternalAuthAction
 import uk.gov.hmrc.euvatrates.repositories.EuVatRateRepository
 import uk.gov.hmrc.euvatrates.services.EuVatRateService
 import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
@@ -58,6 +60,7 @@ class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
             applicationBuilder()
               .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
               .overrides(bind[EuVatRateRepository].toInstance(mockEuVatRateRepository))
+              .overrides(bind[InternalAuthAction].to(classOf[FakeInternalAuthAction]))
               .build()
 
           running(app) {
@@ -74,6 +77,7 @@ class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
             applicationBuilder()
               .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
               .overrides(bind[EuVatRateRepository].toInstance(mockEuVatRateRepository))
+              .overrides(bind[InternalAuthAction].to(classOf[FakeInternalAuthAction]))
               .build()
 
           running(app) {
@@ -93,6 +97,7 @@ class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
             applicationBuilder()
               .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
               .overrides(bind[EuVatRateRepository].toInstance(mockEuVatRateRepository))
+              .overrides(bind[InternalAuthAction].to(classOf[FakeInternalAuthAction]))
               .build()
 
           running(app) {
@@ -110,6 +115,7 @@ class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
             applicationBuilder()
               .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
               .overrides(bind[EuVatRateRepository].toInstance(mockEuVatRateRepository))
+              .overrides(bind[InternalAuthAction].to(classOf[FakeInternalAuthAction]))
               .build()
 
           running(app) {
@@ -128,6 +134,7 @@ class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
           applicationBuilder()
             .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
             .overrides(bind[EuVatRateRepository].toInstance(mockEuVatRateRepository))
+            .overrides(bind[InternalAuthAction].to(classOf[FakeInternalAuthAction]))
             .build()
 
         val dateFrom = LocalDate.of(2024, 2, 1).toString
@@ -161,6 +168,7 @@ class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
           applicationBuilder()
             .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
             .overrides(bind[EuVatRateRepository].toInstance(mockEuVatRateRepository))
+            .overrides(bind[InternalAuthAction].to(classOf[FakeInternalAuthAction]))
             .build()
 
         running(app) {
@@ -184,6 +192,7 @@ class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
           applicationBuilder()
             .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
             .overrides(bind[EuVatRateRepository].toInstance(mockEuVatRateRepository))
+            .overrides(bind[InternalAuthAction].to(classOf[FakeInternalAuthAction]))
             .build()
 
         running(app) {
@@ -205,6 +214,7 @@ class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
           applicationBuilder()
             .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
             .overrides(bind[EuVatRateRepository].toInstance(mockEuVatRateRepository))
+            .overrides(bind[InternalAuthAction].to(classOf[FakeInternalAuthAction]))
             .build()
 
         running(app) {
