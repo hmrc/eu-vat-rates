@@ -108,6 +108,11 @@ class EuVatRateRepository @Inject()(
             Filters.in("countryCode", countryCodes: _*),
             Filters.lte("dateFrom", toBson(toDate)),
             Filters.gte("dateTo", toBson(toDate))
+          ),
+          Filters.and(
+            Filters.in("countryCode", countryCodes: _*),
+            Filters.gte("dateFrom", toBson(fromDate)),
+            Filters.lte("dateTo", toBson(toDate))
           )
 
         )
