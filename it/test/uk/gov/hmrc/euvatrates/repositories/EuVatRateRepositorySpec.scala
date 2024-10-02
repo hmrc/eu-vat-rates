@@ -46,6 +46,8 @@ class EuVatRateRepositorySpec
   private val toDate = LocalDate.of(2025, 1, 31)
   private val fromDate2 = LocalDate.of(2024, 2, 1)
   private val toDate2 = LocalDate.of(2025, 2, 28)
+  private val fromDate3 = LocalDate.of(2024, 3, 1)
+  private val toDate3 = LocalDate.of(2025, 3, 31)
 
   private val euVatRate: EuVatRate = EuVatRate(
     country = country,
@@ -64,6 +66,16 @@ class EuVatRateRepositorySpec
     situatedOn = situatedOnDate,
     dateFrom = fromDate2,
     dateTo = toDate2,
+    lastUpdated = Instant.now.truncatedTo(ChronoUnit.MILLIS)
+  )
+
+  private val euVatRate3: EuVatRate = EuVatRate(
+    country = country2,
+    vatRate = BigDecimal(10),
+    vatRateType = VatRateType.Reduced,
+    situatedOn = situatedOnDate,
+    dateFrom = fromDate3,
+    dateTo = toDate3,
     lastUpdated = Instant.now.truncatedTo(ChronoUnit.MILLIS)
   )
 
@@ -113,23 +125,34 @@ class EuVatRateRepositorySpec
 
     "must return saved record when one exists for this user id" in {
 
-      val euVatRate3 = euVatRate.copy(country = country2)
+      val euVatRate4 = euVatRate.copy(country = country2)
 
       repository.set(euVatRate).futureValue
-      repository.set(euVatRate3).futureValue
+      repository.set(euVatRate4).futureValue
 
       val result = repository.getMany(Seq(country, country2), fromDate, toDate).futureValue
 
-      result mustEqual Seq(euVatRate, euVatRate3)
+      result mustEqual Seq(euVatRate, euVatRate4)
+    }
+
+    "must return multiple vat rates over the period" in {
+
+      repository.set(euVatRate).futureValue
+      repository.set(euVatRate2).futureValue
+      repository.set(euVatRate3).futureValue
+
+      val result = repository.getMany(Seq(country, country2), fromDate, toDate3).futureValue
+
+      result must contain theSameElementsAs Seq(euVatRate, euVatRate2, euVatRate3)
     }
 
 
     "doesn't return dates outside of dateFrom/to" in {
 
-      val euVatRate3 = euVatRate.copy(country = country2)
+      val euVatRate4 = euVatRate.copy(country = country2)
 
       repository.set(euVatRate).futureValue
-      repository.set(euVatRate3).futureValue
+      repository.set(euVatRate4).futureValue
 
       val result = repository.getMany(Seq(country, country2), fromDate.plusYears(11), toDate.plusYears(11)).futureValue
 
