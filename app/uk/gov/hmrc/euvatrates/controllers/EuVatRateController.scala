@@ -40,7 +40,7 @@ class EuVatRateController @Inject()(
                                      auth: InternalAuthAction
                                    )(implicit ec: ExecutionContext) extends BackendController(cc) with Logging {
 
-  def getVatRateForCountry(country: String, startDate: Option[String], endDate: Option[String]): Action[AnyContent] = auth.compose(Action).async { implicit request =>
+  def getVatRateForCountry(country: String, startDate: Option[String], endDate: Option[String]): Action[AnyContent] = auth.compose(Action).async {
 
     logger.info(s"Received request with start date $startDate and end date $endDate")
 
