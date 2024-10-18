@@ -16,19 +16,18 @@
 
 package uk.gov.hmrc.euvatrates.connectors
 
-import play.api.http.HeaderNames.CONTENT_TYPE
 import play.api.Configuration
-import uk.gov.hmrc.euvatrates.config.{AppConfig, Service}
+import play.api.http.HeaderNames.CONTENT_TYPE
+import uk.gov.hmrc.euvatrates.config.Service
 import uk.gov.hmrc.euvatrates.logging.Logging
-import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 
 import java.net.URL
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ECSoapConnector @Inject()(
-                                 appConfig: AppConfig,
                                  config: Configuration,
                                  httpClient: HttpClientV2,
                                )(implicit ec: ExecutionContext) extends Logging {

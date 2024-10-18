@@ -22,12 +22,10 @@ import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach
 import uk.gov.hmrc.euvatrates.base.SpecBase
 import uk.gov.hmrc.euvatrates.config.AppConfig
-import uk.gov.hmrc.euvatrates.models.Country
 import uk.gov.hmrc.euvatrates.repositories.EuVatRateRepository
 import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
 
-import java.time.{Clock, Instant, LocalDate, ZoneId}
-import java.time.temporal.ChronoUnit
+import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class EuVatRatesTriggerServiceSpec extends SpecBase with BeforeAndAfterEach {
@@ -35,9 +33,6 @@ class EuVatRatesTriggerServiceSpec extends SpecBase with BeforeAndAfterEach {
   private val mockEuVatRateService = mock[EuVatRateService]
   private val mockEuVatRateRepository = mock[EuVatRateRepository]
   private val mockAppConfig = mock[AppConfig]
-
-  private val instant: Instant = Instant.now().truncatedTo(ChronoUnit.MILLIS)
-  private val stubClock: Clock = Clock.fixed(instant, ZoneId.systemDefault())
 
   override def beforeEach(): Unit = {
     Mockito.reset(
@@ -85,16 +80,7 @@ class EuVatRatesTriggerServiceSpec extends SpecBase with BeforeAndAfterEach {
         result.size mustBe 0
       }
     }
-
   }
-
-  private def allMonthsBetweenDates(currentMonth: LocalDate, endDate: LocalDate): List[LocalDate] = {
-    if (currentMonth.withDayOfMonth(1).isEqual(endDate.withDayOfMonth(1))) {
-      List(currentMonth)
-    } else {
-      List(currentMonth) ++ allMonthsBetweenDates(currentMonth.plusMonths(1), endDate)
-    }
-  }
-
 }
+
 

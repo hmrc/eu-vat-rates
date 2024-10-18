@@ -21,12 +21,8 @@ import play.api.Application
 import play.api.http.Status.OK
 import play.api.test.Helpers.running
 import uk.gov.hmrc.euvatrates.base.{SoapExamples, SpecBase}
-import uk.gov.hmrc.http.HeaderCarrier
-
 
 class ECSoapConnectorSpec extends SpecBase with WireMockHelper {
-
-  implicit private lazy val hc: HeaderCarrier = HeaderCarrier()
 
   private def application: Application = {
     applicationBuilder()

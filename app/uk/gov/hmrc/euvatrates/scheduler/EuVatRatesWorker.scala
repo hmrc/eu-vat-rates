@@ -16,17 +16,16 @@
 
 package uk.gov.hmrc.euvatrates.scheduler
 
-import org.apache.http.concurrent.Cancellable
 import org.apache.pekko.actor.ActorSystem
-import play.api.{Configuration, Logging}
 import play.api.inject.ApplicationLifecycle
+import play.api.{Configuration, Logging}
 import uk.gov.hmrc.euvatrates.services.EuVatRatesTriggerService
 import uk.gov.hmrc.euvatrates.utils.FutureSyntax.FutureOps
 
 import java.time.{Clock, LocalDate}
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ExecutionContext, Future}
-import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
 @Singleton
 class EuVatRatesWorker @Inject()(
