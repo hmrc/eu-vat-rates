@@ -20,15 +20,13 @@ Requirements
 This service is written in [Scala](http://www.scala-lang.org/) and [Play](http://playframework.com/), so needs at least
 a [JRE] to run.
 
-## Run the application
-
-To update from Nexus and start all services from the RELEASE version instead of snapshot
+## Run the application locally via Service Manager
 
 ```
 sm2 --start EU_VAT_RATES_ALL
 ```
 
-### To run the application locally execute the following:
+### To run the application locally from the repository, execute the following:
 
 ```
 sm2 --stop EU_VAT_RATES
