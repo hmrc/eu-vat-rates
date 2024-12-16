@@ -24,7 +24,7 @@ class AppConfig @Inject()(config: Configuration) {
 
   val appName: String = config.get[String]("appName")
 
-  val cacheTtl: Int = config.get[Int]("mongodb.timeToLiveInDays")
+  val cacheTtl: Long = config.get[Long]("mongodb.timeToLiveInDays")
 
   val schedulerEnabled: Boolean = config.get[Boolean]("schedules.eu-vat-rates-worker.enabled")
 }
