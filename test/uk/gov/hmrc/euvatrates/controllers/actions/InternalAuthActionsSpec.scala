@@ -134,6 +134,44 @@ class InternalAuthActionsSpec extends SpecBase with MockitoSugar with Matchers {
 
       }
     }
+
+    "when the client has set a valid auth header but does not have the necessary permission" - {
+
+      "must return forbidden" in {
+
+        implicit val cc: ControllerComponents = Helpers.stubControllerComponents()
+        val mockStubBehaviour = mock[StubBehaviour]
+        val stubAuth = BackendAuthComponentsStub(mockStubBehaviour)
+
+        val app = applicationBuilder()
+          .bindings(
+            bind[BackendAuthComponents].toInstance(stubAuth)
+          ).build()
+
+        running(app) {
+          val authAction = app.injector.instanceOf[AuthenticatedIdentifierAction]
+          val canAccessPredicate = Predicate.Permission(
+            Resource(
+              ResourceType("eu-vat-rates"),
+              ResourceLocation("*")
+            ),
+            IAAction("READ")
+          )
+
+          when(mockStubBehaviour.stubAuth(eqTo(Some(canAccessPredicate)),
+            eqTo(Retrieval.EmptyRetrieval))) thenReturn Future.failed(UpstreamErrorResponse("Forbidden", Status.FORBIDDEN))
+
+          val result = authAction.invokeBlock(
+            FakeRequest().withHeaders("Authorization" -> "Anything"),
+            (_: Request[AnyContent]) => {
+              Future.successful(Results.Ok)
+            }
+          )
+
+          status(result) mustBe FORBIDDEN
+        }
+      }
+    }
   }
 
 }
