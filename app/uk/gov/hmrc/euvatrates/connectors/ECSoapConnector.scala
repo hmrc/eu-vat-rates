@@ -18,10 +18,12 @@ package uk.gov.hmrc.euvatrates.connectors
 
 import play.api.Configuration
 import play.api.http.HeaderNames.CONTENT_TYPE
+import play.api.libs.ws.DefaultBodyWritables.writeableOf_String
 import uk.gov.hmrc.euvatrates.config.Service
 import uk.gov.hmrc.euvatrates.logging.Logging
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
+import uk.gov.hmrc.http.HttpReads.Implicits._
 
 import java.net.URL
 import javax.inject.Inject

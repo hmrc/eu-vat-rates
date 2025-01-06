@@ -201,6 +201,32 @@ class EuVatRateControllerSpec extends SpecBase with BeforeAndAfterEach {
         }
       }
 
+      "when dateTo is not processable" in {
+
+        val invalidDateTo = "invalid-date"
+
+        lazy val fakeRequest = FakeRequest(
+          GET,
+          routes.EuVatRateController.getVatRateForCountry(
+            countryCode,
+            startDate = Some("2024-01-01"), // valid date from
+            endDate = Some(invalidDateTo) // invalid date to
+          ).url)
+
+        val app =
+          applicationBuilder()
+            .overrides(bind[EuVatRateService].toInstance(mockEuVatRateService))
+            .overrides(bind[EuVatRateRepository].toInstance(mockEuVatRateRepository))
+            .overrides(bind[InternalAuthAction].to(classOf[FakeInternalAuthAction]))
+            .build()
+
+        running(app) {
+          val result = route(app, fakeRequest).value
+          status(result) mustEqual Status.BAD_REQUEST
+          contentAsString(result) must include("dateTo was not processable") // Ensure the message is in the response
+        }
+      }
+
     }
 
     "return 500" - {
