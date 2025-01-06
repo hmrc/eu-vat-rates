@@ -99,6 +99,66 @@ class EuVatRateServiceSpec extends SpecBase with BeforeAndAfterEach {
         }
       }
     }
+
+    "should throw exception for unknown country code" in {
+      val responseXml = <env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+        <env:Header/>
+        <env:Body>
+          <ns0:retrieveVatRatesRespMsg xmlns="urn:ec.europa.eu:taxud:tedb:services:v1:IVatRetrievalService:types"
+                                       xmlns:ns0="urn:ec.europa.eu:taxud:tedb:services:v1:IVatRetrievalService">
+            <additionalInformation/>
+            <vatRateResults>
+              <memberState>ZZ</memberState> <!-- Unknown country code -->
+              <type>REDUCED</type>
+              <rate>
+                <type>REDUCED_RATE</type>
+                <value>5.5</value>
+              </rate>
+              <situationOn>2021-05-01+01:00</situationOn>
+            </vatRateResults>
+          </ns0:retrieveVatRatesRespMsg>
+        </env:Body>
+      </env:Envelope>
+
+      when(mockEcVatRateConnector.getVatRates(any())) thenReturn HttpResponse(200, responseXml.toString()).toFuture
+
+      val service = new EuVatRateService(mockEuVatRateRepository, mockEcVatRateConnector, stubClockAtArbitraryDate)
+
+      intercept[Exception] {
+        service.getAllVatRates(countries, dateFrom = dateFrom, dateTo = dateTo).futureValue
+      }
+    }
+
+    "should throw exception for unknown vat rate type" in {
+      val responseXml = <env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+        <env:Header/>
+        <env:Body>
+          <ns0:retrieveVatRatesRespMsg xmlns="urn:ec.europa.eu:taxud:tedb:services:v1:IVatRetrievalService:types"
+                                       xmlns:ns0="urn:ec.europa.eu:taxud:tedb:services:v1:IVatRetrievalService">
+            <additionalInformation/>
+            <vatRateResults>
+              <memberState>
+                {country1.code}
+              </memberState>
+              <type>INVALID</type> <!-- Invalid VAT rate type -->
+              <rate>
+                <type>INVALID_RATE</type> <!-- Invalid VAT rate type -->
+                <value>5.5</value>
+              </rate>
+              <situationOn>2021-05-01+01:00</situationOn>
+            </vatRateResults>
+          </ns0:retrieveVatRatesRespMsg>
+        </env:Body>
+      </env:Envelope>
+
+      when(mockEcVatRateConnector.getVatRates(any())) thenReturn HttpResponse(200, responseXml.toString()).toFuture
+
+      val service = new EuVatRateService(mockEuVatRateRepository, mockEcVatRateConnector, stubClockAtArbitraryDate)
+
+      intercept[Exception] {
+        service.getAllVatRates(Seq(country1), dateFrom = dateFrom, dateTo = dateTo).futureValue
+      }
+    }
   }
 
 }
