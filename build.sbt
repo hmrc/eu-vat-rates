@@ -1,7 +1,7 @@
 import uk.gov.hmrc.DefaultBuildSettings
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.12"
+ThisBuild / scalaVersion := "3.3.4"
 
 lazy val microservice = Project("eu-vat-rates", file("."))
   .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin)
@@ -14,6 +14,7 @@ lazy val microservice = Project("eu-vat-rates", file("."))
   )
   .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings: _*)
+  .settings(scalacOptions += "-Wconf:msg=Flag.*repeatedly:s")
 
 lazy val it = project
   .enablePlugins(PlayScala)

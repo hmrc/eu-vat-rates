@@ -56,7 +56,7 @@ object EuVatRate {
         (__ \ "dateFrom").write(MongoJavatimeFormats.localDateFormat) and
         (__ \ "dateTo").write(MongoJavatimeFormats.localDateFormat) and
         (__ \ "lastUpdated").write(MongoJavatimeFormats.instantFormat)
-      ) (unlift(EuVatRate.unapply))
+      ) (euVatRate => Tuple.fromProductTyped(euVatRate))
   }
 
   val dbFormat: Format[EuVatRate] = Format(dbReads, dbWrites)

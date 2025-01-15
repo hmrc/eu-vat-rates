@@ -81,7 +81,7 @@ class EuVatRateRepositorySpec
 
   private val mockAppConfig = mock[AppConfig]
 
-  protected override val repository = new EuVatRateRepository(
+  protected override val repository: EuVatRateRepository = new EuVatRateRepository(
     mongoComponent = mongoComponent,
     mockAppConfig
   )

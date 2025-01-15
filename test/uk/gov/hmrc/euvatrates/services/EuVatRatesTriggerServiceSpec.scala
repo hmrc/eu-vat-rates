@@ -79,6 +79,21 @@ class EuVatRatesTriggerServiceSpec extends SpecBase with BeforeAndAfterEach {
 
         result.size mustBe 0
       }
+
+      "return empty when no VAT rates are retrieved" in {
+
+        when(mockAppConfig.schedulerEnabled) thenReturn true
+        when(mockEuVatRateService.getAllVatRates(any(), any(), any())) thenReturn Seq.empty.toFuture
+        when(mockEuVatRateRepository.setMany(any())) thenReturn Seq.empty.toFuture
+
+        val service = new EuVatRatesTriggerService(mockEuVatRateService, mockEuVatRateRepository, mockAppConfig)
+
+        val now = LocalDate.now(stubClockAtArbitraryDate)
+
+        val result = service.triggerFeedUpdate(now).futureValue
+
+        result.size mustBe 0
+      }
     }
   }
 }
