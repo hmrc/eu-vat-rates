@@ -12,7 +12,6 @@ lazy val microservice = Project("eu-vat-rates", file("."))
     scalacOptions += "-Wconf:src=routes/.*:s",
     PlayKeys.playDefaultPort := 10188,
   )
-  .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings: _*)
   .settings(scalacOptions += "-Wconf:msg=Flag.*repeatedly:s")
 
